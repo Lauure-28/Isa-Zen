@@ -1,375 +1,70 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Espace Zen</title>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400&family=Playfair+Display:wght@400;700&family=Alegreya:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
+from flask import Flask, render_template
+from flask_sqlalchemy import SQLAlchemy
+from deep_translator import GoogleTranslator
+import requests
+from datetime import datetime, date
+import random
+import os
+from data import VIDEOS_DATA
+
+# On importe la liste complète des 87 cartes depuis notre nouveau fichier
+from oracles import ORACLES_BIEN_ETRE
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cartes.db'
+
+# ⚠️ Clé secrète indispensable pour Flask
+app.secret_key = 'Isa-ZEN-23.12'
+
+db = SQLAlchemy(app)
+
+class Carte(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nom = db.Column(db.String(100), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+
+with app.app_context():
+    db.create_all()
+
+def get_horoscope_api():
+    try:
+        url = "https://horoscope-app-api.vercel.app/api/v1/get-horoscope/daily?sign=aries&day=today"
+        response = requests.get(url, timeout=5)
+        if response.status_code == 200:
+            texte_anglais = response.json()['data']['horoscope']
+            try:
+                return GoogleTranslator(source='en', target='fr').translate(texte_anglais)
+            except Exception:
+                # Texte de secours élégant en français si la traduction bloque
+                return "Une énergie sereine et lumineuse vous accompagne aujourd'hui, prenez le temps d'accueillir l'instant présent."
+        return "Le ciel est calme, profitez de l'instant."
+    except Exception as e:
+        return "Une énergie sereine vous accompagne aujourd'hui, prenez le temps de respirer."
+
+@app.route('/')
+def home():
+    now = datetime.now()
+    jours = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
+    mois = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"]
+    date_fr = f"{jours[now.weekday()]} {now.day} {mois[now.month-1]} {now.year}"
+    heure_fr = now.strftime("%H:%M")
+
+    today_ordinal = date.today().toordinal()
+    random.seed(today_ordinal)
     
-    <!-- Liens PWA (Application) -->
-    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-    <meta name="theme-color" content="#b38f4d">
+    carte_du_jour = random.choice(ORACLES_BIEN_ETRE)
+    
+    random.seed()
 
-    <style>
-        /* Variables CSS */
-        :root {
-            --bg-body: #faf8f5; 
-        }
+    horoscope_du_jour = get_horoscope_api()
 
-        /* --- LE RESET ABSOLU POUR FORCER L'AGENCEMENT --- */
-        body, html {
-            margin: 0 !important;
-            padding: 0 !important;
-            background-color: var(--bg-body);
-            width: 100% !important;
-            overflow-x: hidden !important;
-        }
+    return render_template('index.html', 
+                           carte=carte_du_jour, 
+                           horoscope=horoscope_du_jour, 
+                           date=date_fr, 
+                           heure=heure_fr,
+                           data=VIDEOS_DATA)
 
-        /* Conteneur principal en Flexbox strict */
-        .layout {
-            display: flex !important;
-            flex-direction: row !important;
-            width: 100vw !important;
-            min-height: 100vh !important;
-            align-items: flex-start !important;
-        }
-        
-        /* Le menu prend SA place et reste collé (sticky) pour ne pas flotter au-dessus du reste */
-        .sidebar {
-            position: sticky !important; 
-            top: 0 !important;
-            width: 320px !important;
-            min-width: 320px !important;
-            max-width: 320px !important;
-            height: 100vh !important; 
-            overflow-y: auto !important; 
-            background-color: #ffffff !important;
-            border-right: 2px solid #e8decb !important;
-            z-index: 100 !important;
-            padding: 20px !important;
-            box-sizing: border-box !important;
-            flex-shrink: 0 !important; /* Interdit au menu de s'écraser */
-        }
-        
-        /* Désactivation de la flèche native du navigateur et mise en place de notre propre flèche alignée */
-        details > summary {
-            list-style: none;
-        }
-        details > summary::-webkit-details-marker {
-            display: none;
-        }
-
-        .custom-summary {
-            cursor: pointer;
-            padding: 8px 0;
-            font-weight: bold;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: flex-start; /* Aligne tout en haut pour que le texte sur 2 lignes ne décale pas la flèche */
-            gap: 10px;
-            text-align: left;
-        }
-
-        .custom-summary .arrow {
-            color: #b8860b;
-            font-size: 0.75rem;
-            transition: transform 0.2s ease;
-            margin-top: 4px; /* Ajuste pour l'aligner pile avec la première ligne de texte */
-            flex-shrink: 0;
-        }
-
-        details[open] > .custom-summary .arrow {
-            transform: rotate(90deg);
-        }
-
-        /* Le contenu prend LE RESTE de la place sans jamais passer sous le menu */
-        .content {
-            flex-grow: 1 !important;
-            min-width: 0 !important; /* ⚠️ LA CLÉ : Empêche l'image de déborder et de casser la page */
-            padding: 40px !important;
-            box-sizing: border-box !important;
-            margin: 0 !important;
-        }
-
-        /* Sous-colonnes pour la carte et l'horoscope */
-        .deux-colonnes {
-            display: flex !important;
-            flex-direction: row !important;
-            flex-wrap: wrap !important; 
-            gap: 40px !important;
-            width: 100% !important;
-        }
-
-        .colonne-gauche {
-            flex: 1 1 300px !important;
-            min-width: 0 !important;
-            max-width: 400px !important; /* Limite la taille de la carte oracle */
-        }
-
-        .colonne-droite {
-            flex: 1 1 300px !important;
-            min-width: 0 !important;
-        }
-
-        /* On bloque l'image de la carte pour qu'elle respecte sa colonne */
-        .oracle-flip-container, .carte, .card-front, .card-back {
-            width: 100% !important;
-            max-width: 100% !important;
-            box-sizing: border-box !important;
-        }
-        
-        .card-image-box {
-            width: 100% !important;
-            display: flex !important;
-            justify-content: center !important;
-        }
-
-        .card-img-src {
-            width: 100% !important;
-            max-width: 100% !important;
-            height: auto !important;
-            border-radius: 8px !important;
-            object-fit: cover !important;
-        }
-
-        /* Style des étoiles favoris */
-        .fav-star {
-            cursor: pointer;
-            color: #ccc;
-            margin-left: 8px;
-            font-size: 1.1em;
-            user-select: none;
-        }
-        .fav-star.active {
-            color: #ffb703;
-        }
-
-        /* --- RESPONSIVE MOBILE & TABLETTES --- */
-        @media screen and (max-width: 768px) {
-            .layout {
-                flex-direction: column !important;
-                width: 100% !important;
-            }
-            .sidebar {
-                position: relative !important;
-                width: 100% !important;
-                min-width: 100% !important;
-                max-width: 100% !important;
-                height: auto !important;
-                max-height: 40vh !important; /* Permet de scroller le menu s'il est long */
-                border-right: none !important;
-                border-bottom: 2px solid #e8decb !important;
-            }
-            .content {
-                padding: 20px !important;
-                width: 100% !important;
-            }
-            .deux-colonnes {
-                flex-direction: column !important;
-                gap: 20px !important;
-            }
-            .colonne-gauche, .colonne-droite {
-                max-width: 100% !important;
-                width: 100% !important;
-            }
-        }
-    </style>
-</head>
-<body>
-
-<div class="layout">
-    <aside class="sidebar">
-        <h2>Bibliothèque</h2>
-
-        <details open id="favoris-section" style="margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px dashed #b38f4d;">
-            <summary class="custom-summary" style="color: #ffb703;"><span class="arrow">▶</span><span>⭐ Mes Favoris</span></summary>
-            <ul id="favoris-list" class="video-list" style="margin-top: 5px; padding-left: 5px;">
-                <li style="color: gray; font-style: italic; list-style: none;" id="no-fav-text">Aucun favori</li>
-            </ul>
-        </details>
-
-        <!-- Boucle sur les Auteurs (keys de data) -->
-        {% for auteur, categories in data.items() %}
-            <details> 
-                <summary class="custom-summary cat-title"><span class="arrow">▶</span><span>{{ auteur }}</span></summary>
-                
-                <!-- Boucle sur les Catégories de l'auteur -->
-                {% for categorie, videos in categories.items() %}
-                    <details style="margin-left: 15px;">
-                        <summary class="custom-summary auteur-name"><span class="arrow">▶</span><span>{{ categorie }}</span></summary>
-                        
-                        <ul class="video-list">
-                            <!-- Boucle sur les vidéos -->
-                            {% for video in videos %}
-                                <li style="display: flex; justify-content: space-between; align-items: center;">
-                                    <a href="javascript:void(0);" onclick="ouvrirVideo('{{ video.id }}')">{{ video.titre }}</a>
-                                    <span class="fav-star" id="star-{{ video.id }}" onclick="toggleFavori('{{ video.id }}', '{{ video.titre | escape }}')">★</span>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </details>
-                {% endfor %}
-            </details>
-        {% endfor %}
-    </aside>
-
-    <main class="content">
-        <div class="deux-colonnes">
-            
-            <div class="colonne-gauche">
-                <h1 class="oracle-main-title">☽ Énergie du jour ☾</h1>
-                
-                <div class="oracle-flip-container" onclick="retournerCarte(this)">
-                    <div class="carte">
-                        
-                        <div class="card-front">
-                            <div class="card-image-box">
-                                <img class="card-img-src" src="{{ carte.image }}" alt="Image Oracle">
-                            </div>
-                            <div class="card-front-footer">
-                                <p class="oracle-card-front-label">{{ carte.nom }}</p>
-                            </div>
-                        </div>
-                        
-                        <div class="card-back">
-                            {% if carte %}
-                                <h2 class="oracle-card-label">{{ carte.nom }}</h2>
-                                <hr class="card-separator">
-                                <p class="oracle-card-message">{{ carte.message }}</p>
-                            {% endif %}
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="colonne-droite">
-                <div class="header-info">
-                    <p>Nous sommes le <strong id="date-fr">Chargement...</strong> | Il est <strong id="heure-fr">--:--</strong></p>
-                    <p style="margin-top: 5px; font-size: 0.95em;">🔮 Phase Lunaire : <span id="lune-info">🌕 Pleine Lune</span></p>
-                </div>
-                
-                <div class="horoscope-center">
-                    <h3>☀️ Horoscope du jour</h3>
-                    <div class="horoscope-text">
-                        {{ horoscope | safe }}
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </main>
-</div>
-
-<div id="videoModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="fermerVideo()">&times;</span>
-        <iframe id="modal-player" src="" allowfullscreen></iframe>
-    </div>
-</div>
-
-<script>
-    // Enregistrement du Service Worker pour transformer le site en application installable
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/static/sw.js')
-            .then(() => console.log("Application prête à être installée !"))
-            .catch((err) => console.log("Erreur Service Worker : ", err));
-    }
-
-    function retournerCarte(element) {
-        element.classList.toggle('flipped');
-    }
-
-    function ouvrirVideo(id) {
-        document.getElementById('modal-player').src = "https://www.youtube.com/embed/" + id + "?autoplay=1";
-        document.getElementById('videoModal').style.display = 'flex';
-    }
-    function fermerVideo() {
-        document.getElementById('videoModal').style.display = 'none';
-        document.getElementById('modal-player').src = "";
-    }
-    window.onclick = function(event) {
-        let modal = document.getElementById('videoModal');
-        if (event.target == modal) { fermerVideo(); }
-    }
-
-    function afficherDateEtHeure() {
-        const maintenant = new Date();
-        
-        // Formate la date en français (ex: Samedi 29 août 2026)
-        const optionsDate = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-        let dateStr = maintenant.toLocaleDateString('fr-FR', optionsDate);
-        dateStr = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
-        
-        // Formate l'heure en direct
-        const heureStr = maintenant.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-        
-        document.getElementById('date-fr').innerText = dateStr;
-        document.getElementById('heure-fr').innerText = heureStr;
-    }
-
-    function calculerPhaseLune() {
-        const descs = ["🌑 Nouvelle Lune", "🌒 Premier Croissant", "🌓 Premier Quartier", "🌔 Lune Gibbeuse", "🌕 Pleine Lune", "🌖 Lune Disséminante", "🌗 Dernier Quartier", "🌘 Dernier Croissant"];
-        const maintenant = new Date();
-        const reference = new Date(2026, 0, 18, 14, 53); 
-        const cycle = 29.530588853; 
-        const diffMS = maintenant - reference;
-        const diffJours = diffMS / (1000 * 60 * 60 * 24);
-        const positionDansCycle = (diffJours % cycle) / cycle;
-        const index = Math.floor(positionDansCycle * 8) % 8;
-        document.getElementById('lune-info').innerText = descs[index];
-    }
-
-    let favoris = JSON.parse(localStorage.getItem('videosFavoris')) || [];
-
-    function toggleFavori(id, titre) {
-        const index = favoris.findIndex(item => item.id === id);
-        if (index === -1) {
-            favoris.push({id: id, titre: titre});
-            if(document.getElementById(`star-${id}`)) document.getElementById(`star-${id}`).classList.add('active');
-        } else {
-            favoris.splice(index, 1);
-            if(document.getElementById(`star-${id}`)) document.getElementById(`star-${id}`).classList.remove('active');
-        }
-        localStorage.setItem('videosFavoris', JSON.stringify(favoris));
-        afficherFavoris();
-    }
-
-    function afficherFavoris() {
-        const list = document.getElementById('favoris-list');
-        list.innerHTML = '';
-        
-        if (favoris.length === 0) {
-            list.innerHTML = '<li style="color: gray; font-style: italic; list-style: none;" id="no-fav-text">Aucun favori</li>';
-            return;
-        }
-
-        favoris.forEach(video => {
-            const li = document.createElement('li');
-            li.style.display = "flex";
-            li.style.justifyContent = "space-between";
-            li.style.alignItems = "center";
-            li.innerHTML = `
-                <a href="javascript:void(0);" onclick="ouvrirVideo('${video.id}')">🎬 ${video.titre}</a>
-                <span class="fav-star active" onclick="toggleFavori('${video.id}', '${video.titre}')">★</span>
-            `;
-            list.appendChild(li);
-        });
-
-        favoris.forEach(video => {
-            const star = document.getElementById(`star-${video.id}`);
-            if(star) star.classList.add('active');
-        });
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-        calculerPhaseLune();
-        afficherFavoris();
-        afficherDateEtHeure();
-        // Met à jour l'heure toutes les minutes en direct
-        setInterval(afficherDateEtHeure, 60000);
-    });
-</script>
-</body>
-</html>
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5001))
+    app.run(host='0.0.0.0', port=port, debug=True)
