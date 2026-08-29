@@ -3,7 +3,7 @@ self.addEventListener('install', (e) => {
     caches.open('espace-zen-store').then((cache) => {
       return cache.addAll([
         '/',
-        '/static/css/style.css'
+        '/static/CSS/style.css'
       ]);
     })
   );
