@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Espace Zen</title>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400&family=Playfair+Display:wght@400;700&family=Alegreya:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}"><link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
     
     <!-- Liens PWA (Application) -->
     <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
@@ -246,7 +246,7 @@
 
             <div class="colonne-droite">
                 <div class="header-info">
-                    <p>Nous sommes le <strong>{{ date }}</strong> | Il est <strong>{{ heure }}</strong></p>
+                    <p>Nous sommes le <strong id="date-fr">Chargement...</strong> | Il est <strong id="heure-fr">--:--</strong></p>
                     <p style="margin-top: 5px; font-size: 0.95em;">🔮 Phase Lunaire : <span id="lune-info">🌕 Pleine Lune</span></p>
                 </div>
                 
@@ -292,6 +292,21 @@
     window.onclick = function(event) {
         let modal = document.getElementById('videoModal');
         if (event.target == modal) { fermerVideo(); }
+    }
+
+    function afficherDateEtHeure() {
+        const maintenant = new Date();
+        
+        // Formate la date en français (ex: Samedi 29 août 2026)
+        const optionsDate = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+        let dateStr = maintenant.toLocaleDateString('fr-FR', optionsDate);
+        dateStr = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+        
+        // Formate l'heure en direct
+        const heureStr = maintenant.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+        
+        document.getElementById('date-fr').innerText = dateStr;
+        document.getElementById('heure-fr').innerText = heureStr;
     }
 
     function calculerPhaseLune() {
@@ -351,6 +366,9 @@
     window.addEventListener('DOMContentLoaded', () => {
         calculerPhaseLune();
         afficherFavoris();
+        afficherDateEtHeure();
+        // Met à jour l'heure toutes les minutes en direct
+        setInterval(afficherDateEtHeure, 60000);
     });
 </script>
 </body>
