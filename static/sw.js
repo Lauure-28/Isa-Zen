@@ -1,9 +1,23 @@
 self.addEventListener('install', (e) => {
+  e.waitUntil(
+    caches.open('espace-zen-store').then((cache) => {
+      return cache.addAll([
+        '/',
+        '/static/CSS/style.css'
+      ]);
+    })
+  );
   self.skipWaiting();
 });
+
 self.addEventListener('activate', (e) => {
-  e.clients.matchAll({ type: 'window' }).then(clients => {
-    clients.forEach(client => client.navigate(client.url));
-  });
-  self.registration.unregister();
+  e.waitUntil(clients.claim());
+});
+
+self.addEventListener('fetch', (e) => {
+  e.respondWith(
+    caches.match(e.request).then((response) => {
+      return response || fetch(e.request);
+    })
+  );
 });
