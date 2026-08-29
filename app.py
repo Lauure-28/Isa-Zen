@@ -32,13 +32,17 @@ with app.app_context():
 def get_horoscope_api():
     try:
         url = "https://horoscope-app-api.vercel.app/api/v1/get-horoscope/daily?sign=aries&day=today"
-        response = requests.get(url)
+        response = requests.get(url, timeout=5)
         if response.status_code == 200:
             texte_anglais = response.json()['data']['horoscope']
-            return GoogleTranslator(source='en', target='fr').translate(texte_anglais)
+            try:
+                return GoogleTranslator(source='en', target='fr').translate(texte_anglais)
+            except Exception:
+                # Texte de secours élégant en français si la traduction bloque
+                return "Une énergie sereine et lumineuse vous accompagne aujourd'hui, prenez le temps d'accueillir l'instant présent."
         return "Le ciel est calme, profitez de l'instant."
     except Exception as e:
-        return f"Erreur technique : {str(e)}"
+        return "Une énergie sereine vous accompagne aujourd'hui, prenez le temps de respirer."
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
