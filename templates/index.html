@@ -4,7 +4,7 @@
   <script>window["__codeletBootstrap__"]=JSON.parse('{"A":"A","B":"20260901-05-1a916a1","C":{"Abril Fatface":"YACgEZbkUVE,0","Alfa Slab One":"YACgEYS9sJU,0","Anton":"YACgEcYqQ-A,0","Archivo":"YAHO2-t-jNE,0","Arial":"YAGyDvJ_4Ts,0","Bebas Neue":"YACgESME5ew,0","Bricolage Grotesque":"YAFyMcdwzpc,0","Canva Sans":"YAFLd8sKbwc,2","Caveat":"YALBs2ploWQ,0","Comic Sans MS":"YAHO2VMiyZo,0","Cormorant Garamond":"YAFdJhX-538,0","Courier New":"YAGzXiGs0_8,0","DM Sans":"YAD1aU3sLnI,0","DM Serif Display":"YAD1aYG82rc,0","Forum":"YACgEcnnqB4,0","Fraunces":"YAEul-FRQw4,0","Georgia":"YAGzXkO0pEM,0","Helvetica Neue":"YAFcf6CtJfI,0","Impact":"YAFcfnjI7Vk,0","Inter":"YAFdJvSyp_k,3","Iowan Old Style":"YAGNIFa8j9o,0","Jacques Francois":"YAHO2a5g66Q,0","JetBrains Mono":"YAFdJksXcAk,0","Libre Baskerville":"YACgEUFdPdA,0","Manrope":"YAHO2b2feC4,0","Merriweather":"YACgEXvHxxs,0","Montserrat":"YADLjI9qxTA,0","Nunito":"YACgEX8C5Gg,0","Oleo Script":"YACgEQQ14jI,0","Phantom Sans":"YAHO2E8Pb88,0","Playfair Display":"YACgEYmuCJE,0","Poppins":"YAFdJjbTu24,1","Press Start 2P":"YAFyGr-8pmQ,0","Quicksand":"YADWjpfPmdk,0","Raleway":"YACgEVg3xZg,0","Segoe UI":"YAHNdRD1Klw,0","Source Sans 3":"YAG4lO1Mj10,0","Spectral":"YAHO2rVUHIM,0","Times New Roman":"YAGzXW3gftg,0","Times":"YAGzXW3gftg,0","Ubuntu":"YACgERDU--Q,0","Work Sans":"YAGXhLOKv44,0","Yellowtail":"YACgEYG4kG4,0","ui-monospace":"YADlN8CFZ8Q,0","ui-sans-serif":"YACkoN-xg4g,0"}}');</script>
   <script src="/_sdk/50d846425a1e5082.telemetry_sdk.js" integrity="sha512-Otbex+ztlVbcEGql0rXGd/3E3ee/hqAntg6DeuUEMG6pIPbXGOSvZbFZVzknAXi1tH/itQ+ijEhOTr2aWj6CXg=="></script>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Isa-Zen</title>
   
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
@@ -25,34 +25,57 @@
     }
 
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
 
     body {
       width: 100%;
-      min-height: 100%;
+      min-height: 100vh;
       margin: 0;
       font-family: "Comfortaa", sans-serif;
       color: var(--ink);
+      overflow-x: hidden;
     }
 
     .font-comfortaa { font-family: "Comfortaa", cursive, sans-serif !important; }
 
+    /* --- LAYOUT RESPONSIVE (PC / Tablette / Mobile / Paysage) --- */
     .site-frame {
       width: 100%;
-      min-height: 100%;
+      min-height: 100vh;
       display: flex;
+      flex-direction: column; /* Par défaut (Mobile & Tablette) = Empilé */
       background: linear-gradient(135deg, #f8f5eb 0%, #edf5ee 54%, #faeee5 100%);
     }
 
+    @media (min-width: 1024px) {
+      .site-frame {
+        flex-direction: row; /* Sur grand écran = Côte à côte */
+      }
+    }
+
+    /* --- SIDEBAR RESPONSIVE --- */
     .side-library {
-      width: 15.5rem;
-      flex: 0 0 15.5rem;
-      min-height: 100%;
-      background: rgba(255,255,252,.84);
-      border-right: 1px solid rgba(53,91,78,.12);
-      padding: 1.5rem 1rem;
-      box-shadow: 12px 0 35px rgba(38,73,61,.04);
+      width: 100%;
+      max-height: 35vh; /* Empêche la sidebar de prendre tout l'écran en mode paysage */
       overflow-y: auto;
+      background: rgba(255, 255, 252, 0.95);
+      border-bottom: 1px solid rgba(53,91,78,.12);
+      padding: 1.5rem;
+      box-shadow: 0 4px 15px rgba(38,73,61,.04);
+      z-index: 50;
+    }
+
+    @media (min-width: 1024px) {
+      .side-library {
+        width: 17rem;
+        flex: 0 0 17rem;
+        height: 100vh;
+        max-height: 100vh;
+        position: sticky;
+        top: 0;
+        border-bottom: none;
+        border-right: 1px solid rgba(53,91,78,.12);
+      }
     }
 
     .brand-mark, .hero-title, .ritual-title { font-family: "Fraunces", serif; }
@@ -64,7 +87,6 @@
       margin: 1rem 0;
     }
 
-    /* Style des menus déroulants de la sidebar Flask/Jinja */
     details > summary { list-style: none; cursor: pointer; }
     details > summary::-webkit-details-marker { display: none; }
     
@@ -95,14 +117,19 @@
       user-select: none;
       transition: color 0.2s;
     }
-    .fav-star.active { color: #d58e63; } /* Couleur orange du thème Canva */
+    .fav-star.active { color: #d58e63; }
 
+    /* --- CONTENU PRINCIPAL --- */
     .main-canvas {
+      flex: 1;
       width: 100%;
       min-width: 0;
-      padding: 1rem 1.35rem 2.5rem;
+      padding: 1rem;
       position: relative;
-      overflow: hidden;
+    }
+
+    @media (min-width: 768px) {
+      .main-canvas { padding: 2rem; }
     }
 
     .main-canvas::before {
@@ -119,7 +146,7 @@
       pointer-events: none;
     }
 
-    .content-stack { position: relative; z-index: 1; max-width: 76rem; margin: 0 auto; }
+    .content-stack { position: relative; z-index: 1; max-width: 76rem; margin: 0 auto; width: 100%; }
 
     .daily-strip {
       box-shadow: 0 8px 22px rgba(37,70,59,.05);
@@ -130,23 +157,19 @@
     .hero-overlay { background: linear-gradient(90deg, rgba(25,59,49,.84) 0%, rgba(25,59,49,.57) 48%, rgba(25,59,49,.14) 100%); }
     .hero-title { letter-spacing: -.04em; }
 
-    .soft-button { transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease; }
-    .soft-button:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(22,58,47,.2); filter: brightness(1.02); }
-
     .ritual-card {
       border: 1px solid rgba(85,124,109,.18);
       box-shadow: 0 13px 30px rgba(39,73,62,.06);
-      min-height: 15rem;
+      height: 100%;
     }
     .ritual-oracle { background: linear-gradient(145deg, #e7f0e8, #fbf8ef); }
     .ritual-horoscope { background: linear-gradient(145deg, #f8eddf, #fbf8ef); }
 
-    /* CSS Carte Oracle (Flip) */
+    /* --- CSS CARTE ORACLE INTELLIGENTE --- */
     .oracle-flip-container {
       perspective: 1000px;
       width: 100%;
-      height: 100%;
-      min-height: 350px;
+      min-height: 420px; /* Assure que la carte ne s'écrase pas */
       cursor: pointer;
     }
     .carte {
@@ -169,41 +192,51 @@
     }
     .card-back {
       transform: rotateY(180deg);
-      background: rgba(255,255,255, 0.7);
+      background: rgba(255,255,255, 0.85);
       border: 1px solid var(--sage);
     }
 
-    /* Modal YouTube */
+    /* Boîtes de texte défilantes pour éviter les débordements sur écran horizontal */
+    .scroll-box {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      padding-right: 5px;
+    }
+
+    /* --- MODAL YOUTUBE RESPONSIVE --- */
     .modal {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.7);
       justify-content: center;
       align-items: center;
       z-index: 1000;
+      padding: 1rem;
     }
     .modal-content {
       background: white;
-      padding: 20px;
+      padding: 15px;
       border-radius: 1rem;
-      width: 90%;
-      max-width: 700px;
+      width: 100%;
+      max-width: 800px;
       position: relative;
     }
     .modal-content iframe {
       width: 100%;
-      height: 400px;
+      aspect-ratio: 16 / 9; /* GARANTIT L'ADAPTATION 100% RESPONSIVE */
+      height: auto;
       border: none;
       border-radius: 0.5rem;
     }
     .close-btn {
       position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 24px;
+      top: -40px;
+      right: 0px;
+      font-size: 30px;
       cursor: pointer;
-      color: var(--ink);
+      color: white;
     }
 
     .reveal { animation: rise-in 700ms both ease-out; }
@@ -214,14 +247,6 @@
       from { opacity: 0; transform: translateY(16px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
-    @media (max-width: 768px) {
-      .site-frame { display: block; }
-      .side-library { width: 100%; min-height: auto; padding: 1rem; border-right: 0; border-bottom: 1px solid rgba(53,91,78,.12); }
-      .mobile-hide { display: none; }
-      .main-canvas { padding: 1rem; }
-      .hero-card { min-height: 21rem; }
-    }
   </style>
   <script src="/_sdk/b3bf9e8ac58e6ad6.data_sdk.js" type="text/javascript"></script>
   <script src="/_sdk/2cfae6c35b9820dc.resizing_sdk.js" type="text/javascript"></script>
@@ -229,15 +254,16 @@
  <body data-template-id="__page-root">
   <div class="site-frame">
    
+   <!-- SIDEBAR BIBLIOTHÈQUE ET FAVORIS -->
    <aside class="side-library" aria-label="Bibliothèque de créateurs">
     <header>
      <p data-template-id="library-title" class="canva-text brand-mark m-0 font-bold text-2xl">ISA-ZEN</p>
-     <p data-template-id="library-subtitle" class="canva-text mobile-hide mb-0 mt-2 text-xs leading-relaxed text-[#557c6d]">Votre espace de ressourcement</p>
+     <p data-template-id="library-subtitle" class="canva-text mb-0 mt-2 text-xs leading-relaxed text-[#557c6d]">Votre espace de ressourcement</p>
     </header>
-    <div class="sidebar-rule mobile-hide"></div>
+    <div class="sidebar-rule"></div>
     
     <nav class="sidebar-nav flex flex-col gap-1" aria-label="Créateurs et favoris">
-        
+        <!-- Favoris -->
         <details open id="favoris-section" class="mb-3 border-b border-dashed border-[rgba(53,91,78,.2)] pb-3">
             <summary class="custom-summary text-[#d58e63]">
                 <span class="arrow">▶</span>⭐ Mes Favoris
@@ -247,6 +273,7 @@
             </ul>
         </details>
 
+        <!-- Boucle Jinja sur les Auteurs -->
         {% for auteur, categories in data.items() %}
             <details class="mb-1"> 
                 <summary class="custom-summary">
@@ -274,9 +301,11 @@
     </nav>
    </aside>
 
+   <!-- CONTENU PRINCIPAL -->
    <main class="main-canvas">
     <div class="content-stack">
      
+     <!-- BANDEAU INFO -->
      <section data-template-id="daily-panel" class="canva-banner daily-strip mb-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 rounded-full px-4 py-2 text-center font-comfortaa bg-white/70 backdrop-blur-md" aria-label="Informations du jour">
       <div class="flex items-center gap-1.5">
        <i data-lucide="calendar-days" class="h-4 w-4 text-[#557c6d]" aria-hidden="true"></i> <span id="live-date" class="text-sm font-semibold text-[#28493f]">Chargement...</span>
@@ -291,47 +320,59 @@
       </div>
      </section>
      
+     <!-- HERO CANVA -->
      <section class="relative overflow-hidden rounded-[1.7rem]">
       <div class="hero-card relative overflow-hidden rounded-[1.7rem]">
        <img data-template-id="hero-image" class="canva-image absolute inset-0 h-full w-full object-cover" loading="lazy">
        <div class="hero-overlay absolute inset-0"></div>
        
-       <div class="relative z-10 flex min-h-[22rem] max-w-xl flex-col justify-center px-7 py-12 sm:px-12 text-white">
+       <div class="relative z-10 flex min-h-[18rem] md:min-h-[22rem] max-w-xl flex-col justify-center px-7 py-12 sm:px-12 text-white">
         <p data-template-id="hero-kicker" class="canva-text reveal mb-4 w-fit rounded-full bg-white/20 px-3 py-1.5 text-[.62rem] font-bold tracking-[.13em] uppercase">À ton rythme</p>
-        <h1 data-template-id="hero-title" class="canva-text hero-title reveal delay-1 m-0 font-bold text-4xl leading-[1.05]">Trouve la voix qui t’accompagne aujourd’hui.</h1>
-        <p data-template-id="hero-copy" class="canva-text reveal delay-2 mb-0 mt-5 max-w-md leading-relaxed text-emerald-50">Explore des univers de méditation, de guidance, d'hypnose et de développement personnel.</p>
+        <h1 data-template-id="hero-title" class="canva-text hero-title reveal delay-1 m-0 font-bold text-3xl md:text-4xl leading-[1.1]">Trouve la voix qui t’accompagne aujourd’hui.</h1>
+        <p data-template-id="hero-copy" class="canva-text reveal delay-2 mb-0 mt-5 max-w-md leading-relaxed text-emerald-50 text-sm md:text-base">Explore des univers de méditation, de guidance, d'hypnose et de développement personnel.</p>
        </div>
       </div>
      </section>
 
+     <!-- MODULES INTERACTIFS : ORACLE ET HOROSCOPE (Grille Responsive) -->
      <section class="mt-7 grid gap-4 md:grid-cols-2" aria-label="Rituels du jour">
       
+      <!-- CARTE ORACLE FLIP -->
       <article class="canva-card ritual-card ritual-oracle rounded-[1.4rem] p-6 flex flex-col justify-center">
        <h2 class="serif text-2xl font-bold mb-4 text-[#28493f] text-center">☽ Énergie du jour ☾</h2>
        
-       <div class="oracle-flip-container w-full flex-1" onclick="retournerCarte(this)">
+       <div class="oracle-flip-container w-full" onclick="retournerCarte(this)">
         <div class="carte">
-         <div class="card-front flex flex-col items-center justify-center p-2">
-          <img class="w-full h-40 object-cover rounded-[1rem] shadow-sm mb-3" src="{{ carte.image }}" alt="Carte Oracle">
+         <!-- Face avant de la carte -->
+         <div class="card-front flex flex-col items-center justify-center p-3">
+          <!-- OBJECT-CONTAIN est essentiel pour que l'image ne soit jamais rognée -->
+          <img class="w-full h-48 sm:h-56 md:h-60 object-contain rounded-[1rem] mb-3" src="{{ carte.image }}" alt="Carte Oracle">
           <p class="font-bold text-lg text-[#28493f] m-0">{{ carte.nom }}</p>
           <p class="text-xs text-[#557c6d] italic mt-1">Cliquez pour retourner</p>
          </div>
-         <div class="card-back flex flex-col items-center justify-center p-5 text-center">
-          <h3 class="serif text-xl font-bold text-[#557c6d] mb-2">{{ carte.nom }}</h3>
-          <hr class="w-12 border-[#557c6d] mb-3">
-          <p class="text-[0.9rem] leading-relaxed text-[#28493f] m-0">{{ carte.message }}</p>
+         
+         <!-- Face arrière de la carte -->
+         <div class="card-back p-5 flex flex-col items-center justify-center">
+          <div class="scroll-box flex flex-col items-center justify-center text-center">
+            <h3 class="serif text-xl font-bold text-[#557c6d] mb-2">{{ carte.nom }}</h3>
+            <hr class="w-12 border-[#557c6d] mb-3 mx-auto">
+            <p class="text-[0.95rem] leading-relaxed text-[#28493f] m-0">{{ carte.message }}</p>
+          </div>
          </div>
         </div>
        </div>
       </article>
 
+      <!-- HOROSCOPE -->
       <article class="canva-card ritual-card ritual-horoscope rounded-[1.4rem] p-6 flex flex-col items-center justify-center text-center">
-       <div class="mb-3 grid h-12 w-12 place-items-center rounded-full bg-white/70 text-[#b47752]">
-        <i data-lucide="sun" class="h-6 w-6" aria-hidden="true"></i>
-       </div>
-       <h2 class="serif text-2xl font-bold mb-4 text-[#28493f]">Horoscope du jour</h2>
-       <div class="font-comfortaa text-lg sm:text-xl leading-relaxed text-[#28493f]">
-        {{ horoscope | safe }}
+       <div class="scroll-box flex flex-col items-center justify-center">
+         <div class="mb-3 grid h-12 w-12 place-items-center rounded-full bg-white/70 text-[#b47752]">
+          <i data-lucide="sun" class="h-6 w-6" aria-hidden="true"></i>
+         </div>
+         <h2 class="serif text-2xl font-bold mb-4 text-[#28493f]">Horoscope du jour</h2>
+         <div class="font-comfortaa text-lg sm:text-xl leading-relaxed text-[#28493f] px-2">
+          {{ horoscope | safe }}
+         </div>
        </div>
       </article>
 
@@ -341,6 +382,7 @@
    </main>
   </div>
 
+  <!-- MODAL VIDÉO YOUTUBE -->
   <div id="videoModal" class="modal">
    <div class="modal-content">
     <span class="close-btn" onclick="fermerVideo()">&times;</span>
