@@ -248,7 +248,6 @@
  <body data-template-id="__page-root">
   <div class="site-frame">
    
-   <!-- SIDEBAR BIBLIOTHÈQUE ET FAVORIS -->
    <aside class="side-library" aria-label="Bibliothèque de créateurs">
     <header>
      <p data-template-id="library-title" class="canva-text brand-mark m-0 font-bold text-2xl">ISA-ZEN</p>
@@ -293,11 +292,9 @@
     </nav>
    </aside>
 
-   <!-- CONTENU PRINCIPAL -->
    <main class="main-canvas">
     <div class="content-stack">
      
-     <!-- BANDEAU INFO -->
      <section data-template-id="daily-panel" class="canva-banner daily-strip mb-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 rounded-full px-4 py-2 text-center font-comfortaa bg-white/70 backdrop-blur-md" aria-label="Informations du jour">
       <div class="flex items-center gap-1.5">
        <i data-lucide="calendar-days" class="h-4 w-4 text-[#557c6d]" aria-hidden="true"></i> <span id="live-date" class="text-sm font-semibold text-[#28493f]">Chargement...</span>
@@ -312,10 +309,11 @@
       </div>
      </section>
      
-     <!-- HERO CANVA -->
      <section class="relative overflow-hidden rounded-[1.7rem]">
       <div class="hero-card relative overflow-hidden rounded-[1.7rem]">
-       <img data-template-id="hero-image" class="canva-image absolute inset-0 h-full w-full object-cover" loading="lazy">
+       
+       <img class="absolute inset-0 h-full w-full object-cover" src="{{ url_for('static', filename='images/ton-image.jpg') }}" alt="Bannière Zen" loading="lazy">
+       
        <div class="hero-overlay absolute inset-0"></div>
        
        <div class="relative z-10 flex min-h-[18rem] md:min-h-[22rem] max-w-xl flex-col justify-center px-7 py-12 sm:px-12 text-white">
@@ -326,27 +324,23 @@
       </div>
      </section>
 
-     <!-- MODULES INTERACTIFS : ORACLE ET HOROSCOPE -->
      <section class="mt-7 grid gap-4 md:grid-cols-2" aria-label="Rituels du jour">
       
-      <!-- CARTE ORACLE FLIP (Image agrandie : h-64 sm:h-72 md:h-80) -->
       <article class="canva-card ritual-card ritual-oracle rounded-[1.4rem] p-6 flex flex-col justify-center">
        <h2 class="serif text-2xl font-bold mb-4 text-[#28493f] text-center">☽ Énergie du jour ☾</h2>
        
        <div class="oracle-flip-container w-full" onclick="retournerCarte(this)">
         <div class="carte">
-         <!-- Face avant -->
          <div class="card-front flex flex-col items-center justify-center p-2">
           <img class="w-full h-80 sm:h-96 md:h-[420px] object-contain rounded-[1rem] mb-2" src="{{ carte.image }}" alt="Carte Oracle">
           <p class="font-bold text-lg text-[#28493f] m-0">{{ carte.nom }}</p>
           <p class="text-xs text-[#557c6d] italic mt-1">Cliquez pour retourner</p>
          </div>
          
-         <!-- Face arrière -->
          <div class="card-back p-5 flex flex-col items-center justify-center">
           <div class="scroll-box flex flex-col items-center justify-center text-center">
-            <h3 class="serif text-xl font-bold text-[#557c6d] mb-2">{{ carte.nom }}</h3>
-            <hr class="w-12 border-[#557c6d] mb-3 mx-auto">
+            <h3 class="serif text-xl font-bold text-[#537e6d] mb-2">{{ carte.nom }}</h3>
+            <hr class="w-12 border-[#537e6d] mb-3 mx-auto">
             <p class="text-[0.95rem] leading-relaxed text-[#28493f] m-0">{{ carte.message }}</p>
           </div>
          </div>
@@ -354,7 +348,6 @@
        </div>
       </article>
 
-      <!-- HOROSCOPE -->
       <article class="canva-card ritual-card ritual-horoscope rounded-[1.4rem] p-6 flex flex-col items-center justify-center text-center">
        <div class="scroll-box flex flex-col items-center justify-center">
          <div class="mb-3 grid h-12 w-12 place-items-center rounded-full bg-white/70 text-[#b47752]">
@@ -373,7 +366,6 @@
    </main>
   </div>
 
-  <!-- MODAL VIDÉO YOUTUBE -->
   <div id="videoModal" class="modal">
    <div class="modal-content">
     <span class="close-btn" onclick="fermerVideo()">&times;</span>
