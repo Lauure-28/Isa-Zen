@@ -138,4 +138,314 @@
       box-shadow: 0 13px 30px rgba(39,73,62,.06);
       min-height: 15rem;
     }
-    .ritual-oracle { background: linear-gradient(145deg, #e7f0e8
+    .ritual-oracle { background: linear-gradient(145deg, #e7f0e8, #fbf8ef); }
+    .ritual-horoscope { background: linear-gradient(145deg, #f8eddf, #fbf8ef); }
+
+    /* CSS Carte Oracle (Flip) */
+    .oracle-flip-container {
+      perspective: 1000px;
+      width: 100%;
+      height: 100%;
+      min-height: 350px;
+      cursor: pointer;
+    }
+    .carte {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    .oracle-flip-container.flipped .carte {
+      transform: rotateY(180deg);
+    }
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 1rem;
+    }
+    .card-back {
+      transform: rotateY(180deg);
+      background: rgba(255,255,255, 0.7);
+      border: 1px solid var(--sage);
+    }
+
+    /* Modal YouTube */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 1rem;
+      width: 90%;
+      max-width: 700px;
+      position: relative;
+    }
+    .modal-content iframe {
+      width: 100%;
+      height: 400px;
+      border: none;
+      border-radius: 0.5rem;
+    }
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--ink);
+    }
+
+    .reveal { animation: rise-in 700ms both ease-out; }
+    .delay-1 { animation-delay: 100ms; }
+    .delay-2 { animation-delay: 210ms; }
+
+    @keyframes rise-in {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .site-frame { display: block; }
+      .side-library { width: 100%; min-height: auto; padding: 1rem; border-right: 0; border-bottom: 1px solid rgba(53,91,78,.12); }
+      .mobile-hide { display: none; }
+      .main-canvas { padding: 1rem; }
+      .hero-card { min-height: 21rem; }
+    }
+  </style>
+  <script src="/_sdk/b3bf9e8ac58e6ad6.data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/2cfae6c35b9820dc.resizing_sdk.js" type="text/javascript"></script>
+ </head>
+ <body data-template-id="__page-root">
+  <div class="site-frame">
+   
+   <aside class="side-library" aria-label="Bibliothèque de créateurs">
+    <header>
+     <p data-template-id="library-title" class="canva-text brand-mark m-0 font-bold text-2xl">ISA-ZEN</p>
+     <p data-template-id="library-subtitle" class="canva-text mobile-hide mb-0 mt-2 text-xs leading-relaxed text-[#557c6d]">Votre espace de ressourcement</p>
+    </header>
+    <div class="sidebar-rule mobile-hide"></div>
+    
+    <nav class="sidebar-nav flex flex-col gap-1" aria-label="Créateurs et favoris">
+        
+        <details open id="favoris-section" class="mb-3 border-b border-dashed border-[rgba(53,91,78,.2)] pb-3">
+            <summary class="custom-summary text-[#d58e63]">
+                <span class="arrow">▶</span>⭐ Mes Favoris
+            </summary>
+            <ul id="favoris-list" class="pl-5 mt-2 list-none space-y-2 text-[0.85rem]">
+                <li class="text-gray-400 italic" id="no-fav-text">Aucun favori</li>
+            </ul>
+        </details>
+
+        {% for auteur, categories in data.items() %}
+            <details class="mb-1"> 
+                <summary class="custom-summary">
+                    <span class="arrow">▶</span>{{ auteur }}
+                </summary>
+                
+                {% for categorie, videos in categories.items() %}
+                    <details class="ml-4 mt-1">
+                        <summary class="custom-summary text-[0.85rem] text-[#557c6d]">
+                            <span class="arrow">▶</span>{{ categorie }}
+                        </summary>
+                        
+                        <ul class="pl-4 mt-1 list-none space-y-2">
+                            {% for video in videos %}
+                                <li class="flex justify-between items-center pr-2">
+                                    <a href="javascript:void(0);" onclick="ouvrirVideo('{{ video.id }}')" class="hover:underline text-[0.8rem] text-var(--ink) flex-1 pr-2 truncate">🎬 {{ video.titre }}</a>
+                                    <span class="fav-star" id="star-{{ video.id }}" onclick="toggleFavori('{{ video.id }}', '{{ video.titre | escape }}')">★</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </details>
+                {% endfor %}
+            </details>
+        {% endfor %}
+    </nav>
+   </aside>
+
+   <main class="main-canvas">
+    <div class="content-stack">
+     
+     <section data-template-id="daily-panel" class="canva-banner daily-strip mb-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 rounded-full px-4 py-2 text-center font-comfortaa bg-white/70 backdrop-blur-md" aria-label="Informations du jour">
+      <div class="flex items-center gap-1.5">
+       <i data-lucide="calendar-days" class="h-4 w-4 text-[#557c6d]" aria-hidden="true"></i> <span id="live-date" class="text-sm font-semibold text-[#28493f]">Chargement...</span>
+      </div>
+      <span class="hidden h-3 w-px bg-[#a8c0af] sm:block" aria-hidden="true"></span>
+      <div class="flex items-center gap-1.5">
+       <i data-lucide="clock-3" class="h-4 w-4 text-[#557c6d]" aria-hidden="true"></i> <span id="live-time" class="text-sm font-semibold text-[#28493f]">--:--</span>
+      </div>
+      <span class="hidden h-3 w-px bg-[#a8c0af] sm:block" aria-hidden="true"></span>
+      <div class="flex items-center gap-1.5">
+       <i data-lucide="moon-star" class="h-4 w-4 text-[#557c6d]" aria-hidden="true"></i> <span id="moon-phase" class="text-sm font-semibold text-[#28493f]">Phase lunaire</span>
+      </div>
+     </section>
+     
+     <section class="relative overflow-hidden rounded-[1.7rem]">
+      <div class="hero-card relative overflow-hidden rounded-[1.7rem]">
+       <img data-template-id="hero-image" class="canva-image absolute inset-0 h-full w-full object-cover" loading="lazy">
+       <div class="hero-overlay absolute inset-0"></div>
+       
+       <div class="relative z-10 flex min-h-[22rem] max-w-xl flex-col justify-center px-7 py-12 sm:px-12 text-white">
+        <p data-template-id="hero-kicker" class="canva-text reveal mb-4 w-fit rounded-full bg-white/20 px-3 py-1.5 text-[.62rem] font-bold tracking-[.13em] uppercase">À ton rythme</p>
+        <h1 data-template-id="hero-title" class="canva-text hero-title reveal delay-1 m-0 font-bold text-4xl leading-[1.05]">Trouve la voix qui t’accompagne aujourd’hui.</h1>
+        <p data-template-id="hero-copy" class="canva-text reveal delay-2 mb-0 mt-5 max-w-md leading-relaxed text-emerald-50">Explore des univers de méditation, de guidance, d'hypnose et de développement personnel.</p>
+       </div>
+      </div>
+     </section>
+
+     <section class="mt-7 grid gap-4 md:grid-cols-2" aria-label="Rituels du jour">
+      
+      <article class="canva-card ritual-card ritual-oracle rounded-[1.4rem] p-6 flex flex-col justify-center">
+       <h2 class="serif text-2xl font-bold mb-4 text-[#28493f] text-center">☽ Énergie du jour ☾</h2>
+       
+       <div class="oracle-flip-container w-full flex-1" onclick="retournerCarte(this)">
+        <div class="carte">
+         <div class="card-front flex flex-col items-center justify-center p-2">
+          <img class="w-full h-40 object-cover rounded-[1rem] shadow-sm mb-3" src="{{ carte.image }}" alt="Carte Oracle">
+          <p class="font-bold text-lg text-[#28493f] m-0">{{ carte.nom }}</p>
+          <p class="text-xs text-[#557c6d] italic mt-1">Cliquez pour retourner</p>
+         </div>
+         <div class="card-back flex flex-col items-center justify-center p-5 text-center">
+          <h3 class="serif text-xl font-bold text-[#557c6d] mb-2">{{ carte.nom }}</h3>
+          <hr class="w-12 border-[#557c6d] mb-3">
+          <p class="text-[0.9rem] leading-relaxed text-[#28493f] m-0">{{ carte.message }}</p>
+         </div>
+        </div>
+       </div>
+      </article>
+
+      <article class="canva-card ritual-card ritual-horoscope rounded-[1.4rem] p-6 flex flex-col items-center justify-center text-center">
+       <div class="mb-3 grid h-12 w-12 place-items-center rounded-full bg-white/70 text-[#b47752]">
+        <i data-lucide="sun" class="h-6 w-6" aria-hidden="true"></i>
+       </div>
+       <h2 class="serif text-2xl font-bold mb-4 text-[#28493f]">Horoscope du jour</h2>
+       <div class="font-comfortaa text-lg sm:text-xl leading-relaxed text-[#28493f]">
+        {{ horoscope | safe }}
+       </div>
+      </article>
+
+     </section>
+
+    </div>
+   </main>
+  </div>
+
+  <div id="videoModal" class="modal">
+   <div class="modal-content">
+    <span class="close-btn" onclick="fermerVideo()">&times;</span>
+    <iframe id="modal-player" src="" allowfullscreen></iframe>
+   </div>
+  </div>
+
+  <script src="/_sdk/0aac212797dcb9a6.editing_sdk.js" integrity="sha512-U1Z5TGB/MTX0fFSADhP7rVM3+UzJJjKTapiY1vm1cxcbcyWo4eBuCJNJO6zARJ5kHopP9UvWNtPszOqzRc1ICA=="></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      lucide.createIcons();
+
+      // Retourner la carte Oracle
+      window.retournerCarte = function(element) {
+        element.classList.toggle('flipped');
+      };
+
+      // Heure, Date et Phase Lunaire
+      function afficherDateEtHeure() {
+        const maintenant = new Date();
+        const optionsDate = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+        let dateStr = maintenant.toLocaleDateString('fr-FR', optionsDate);
+        dateStr = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+        
+        const heureStr = maintenant.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+        
+        if(document.getElementById('live-date')) document.getElementById('live-date').innerText = dateStr;
+        if(document.getElementById('live-time')) document.getElementById('live-time').innerText = "Il est " + heureStr;
+      }
+
+      function calculerPhaseLune() {
+        const descs = ["Nouvelle Lune 🌑", "Premier Croissant 🌒", "Premier Quartier 🌓", "Lune Gibbeuse 🌔", "Pleine Lune 🌕", "Lune Disséminante 🌖", "Dernier Quartier 🌗", "Dernier Croissant 🌘"];
+        const maintenant = new Date();
+        const reference = new Date(2026, 0, 18, 14, 53); 
+        const cycle = 29.530588853; 
+        const diffMS = maintenant - reference;
+        const diffJours = diffMS / (1000 * 60 * 60 * 24);
+        const positionDansCycle = (diffJours % cycle) / cycle;
+        const index = Math.floor(positionDansCycle * 8) % 8;
+        if(document.getElementById('moon-phase')) document.getElementById('moon-phase').innerText = descs[index];
+      }
+
+      afficherDateEtHeure();
+      calculerPhaseLune();
+      setInterval(afficherDateEtHeure, 60000);
+
+      // Gestion de la modale vidéo YouTube
+      window.ouvrirVideo = function(id) {
+        document.getElementById('modal-player').src = "https://www.youtube.com/embed/" + id + "?autoplay=1";
+        document.getElementById('videoModal').style.display = 'flex';
+      };
+      window.fermerVideo = function() {
+        document.getElementById('videoModal').style.display = 'none';
+        document.getElementById('modal-player').src = "";
+      };
+      window.onclick = function(event) {
+        let modal = document.getElementById('videoModal');
+        if (event.target == modal) { fermerVideo(); }
+      };
+
+      // Gestion des favoris
+      let favoris = JSON.parse(localStorage.getItem('videosFavoris')) || [];
+
+      window.toggleFavori = function(id, titre) {
+        const index = favoris.findIndex(item => item.id === id);
+        if (index === -1) {
+            favoris.push({id: id, titre: titre});
+            if(document.getElementById(`star-${id}`)) document.getElementById(`star-${id}`).classList.add('active');
+        } else {
+            favoris.splice(index, 1);
+            if(document.getElementById(`star-${id}`)) document.getElementById(`star-${id}`).classList.remove('active');
+        }
+        localStorage.setItem('videosFavoris', JSON.stringify(favoris));
+        afficherFavoris();
+      };
+
+      function afficherFavoris() {
+        const list = document.getElementById('favoris-list');
+        list.innerHTML = '';
+        
+        if (favoris.length === 0) {
+            list.innerHTML = '<li class="text-gray-400 italic text-[0.8rem]" id="no-fav-text">Aucun favori</li>';
+            return;
+        }
+
+        favoris.forEach(video => {
+            const li = document.createElement('li');
+            li.style.display = "flex";
+            li.style.justifyContent = "space-between";
+            li.style.alignItems = "center";
+            li.innerHTML = `
+                <a href="javascript:void(0);" onclick="ouvrirVideo('${video.id}')" class="hover:underline text-[0.8rem] text-[#28493f] flex-1 pr-2 truncate">🎬 ${video.titre}</a>
+                <span class="fav-star active" onclick="toggleFavori('${video.id}', '${video.titre}')">★</span>
+            `;
+            list.appendChild(li);
+        });
+
+        favoris.forEach(video => {
+            const star = document.getElementById(`star-${video.id}`);
+            if(star) star.classList.add('active');
+        });
+      }
+
+      afficherFavoris();
+    });
+  </script>
+ </body>
+</html>
