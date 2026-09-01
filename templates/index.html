@@ -1,24 +1,27 @@
 <!doctype html>
 <html lang="fr">
  <head>
+  <script>window["__codeletBootstrap__"]=JSON.parse('{"A":"A","B":"20260901-05-1a916a1","C":{"Abril Fatface":"YACgEZbkUVE,0","Alfa Slab One":"YACgEYS9sJU,0","Anton":"YACgEcYqQ-A,0","Archivo":"YAHO2-t-jNE,0","Arial":"YAGyDvJ_4Ts,0","Bebas Neue":"YACgESME5ew,0","Bricolage Grotesque":"YAFyMcdwzpc,0","Canva Sans":"YAFLd8sKbwc,2","Caveat":"YALBs2ploWQ,0","Comic Sans MS":"YAHO2VMiyZo,0","Cormorant Garamond":"YAFdJhX-538,0","Courier New":"YAGzXiGs0_8,0","DM Sans":"YAD1aU3sLnI,0","DM Serif Display":"YAD1aYG82rc,0","Forum":"YACgEcnnqB4,0","Fraunces":"YAEul-FRQw4,0","Georgia":"YAGzXkO0pEM,0","Helvetica Neue":"YAFcf6CtJfI,0","Impact":"YAFcfnjI7Vk,0","Inter":"YAFdJvSyp_k,3","Iowan Old Style":"YAGNIFa8j9o,0","Jacques Francois":"YAHO2a5g66Q,0","JetBrains Mono":"YAFdJksXcAk,0","Libre Baskerville":"YACgEUFdPdA,0","Manrope":"YAHO2b2feC4,0","Merriweather":"YACgEXvHxxs,0","Montserrat":"YADLjI9qxTA,0","Nunito":"YACgEX8C5Gg,0","Oleo Script":"YACgEQQ14jI,0","Phantom Sans":"YAHO2E8Pb88,0","Playfair Display":"YACgEYmuCJE,0","Poppins":"YAFdJjbTu24,1","Press Start 2P":"YAFyGr-8pmQ,0","Quicksand":"YADWjpfPmdk,0","Raleway":"YACgEVg3xZg,0","Segoe UI":"YAHNdRD1Klw,0","Source Sans 3":"YAG4lO1Mj10,0","Spectral":"YAHO2rVUHIM,0","Times New Roman":"YAGzXW3gftg,0","Times":"YAGzXW3gftg,0","Ubuntu":"YACgERDU--Q,0","Work Sans":"YAGXhLOKv44,0","Yellowtail":"YACgEYG4kG4,0","ui-monospace":"YADlN8CFZ8Q,0","ui-sans-serif":"YACkoN-xg4g,0"}}');</script>
+  <script src="/_sdk/50d846425a1e5082.telemetry_sdk.js" integrity="sha512-Otbex+ztlVbcEGql0rXGd/3E3ee/hqAntg6DeuUEMG6pIPbXGOSvZbFZVzknAXi1tH/itQ+ijEhOTr2aWj6CXg=="></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ISA-ZEN</title>
+  <title>Isa-Zen</title>
+  
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@400;500;600;700&family=Comfortaa:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
   
   <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-  <meta name="theme-color" content="#b38f4d">
+  <meta name="theme-color" content="#537e6d">
 
   <style>
     :root {
-      --ink: #24443d;
+      --ink: #28493f;
       --sage: #dcebe2;
-      --sage-deep: #537e6d;
-      --cream: #faf8f5;
-      --peach: #f4ddc6;
-      --line: rgba(52, 91, 77, 0.16);
+      --sage-deep: #557c6d;
+      --cream: #fbf8ef;
+      --peach: #f3ddc7;
+      --line: rgba(53, 91, 78, .16);
     }
 
     * { box-sizing: border-box; }
@@ -28,91 +31,43 @@
       width: 100%;
       min-height: 100%;
       margin: 0;
+      font-family: "Comfortaa", sans-serif;
       color: var(--ink);
-      font-family: "DM Sans", sans-serif;
-      background-color: var(--cream);
     }
 
-    .site-shell {
-      width: 100%;
-      min-height: 100%;
-      position: relative;
-      overflow-x: hidden;
-      isolation: isolate;
-    }
-
-    .serif { font-family: "Alegreya", serif; }
     .font-comfortaa { font-family: "Comfortaa", cursive, sans-serif !important; }
 
-    /* Hero Bannière avec Image Zen en fond */
-    .hero-container {
-      background-image: linear-gradient(90deg, rgba(25, 58, 48, 0.85) 0%, rgba(25, 58, 48, 0.45) 60%, rgba(25, 58, 48, 0.15) 100%), 
-                        url('https://images.unsplash.com/photo-1545232979-fbf34fe378a8?auto=format&fit=crop&w=1400&q=80');
-      background-size: cover;
-      background-position: center;
-    }
-
-    /* En-tête sur une ligne */
-    .header-line {
-      display: flex !important;
-      flex-direction: row !important;
-      align-items: center !important;
-      justify-content: space-between !important;
-      white-space: nowrap !important;
-      width: 100% !important;
-    }
-
-    /* Bandeau info supérieur */
-    .top-info-bar {
-      font-family: "Comfortaa", cursive, sans-serif;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-      white-space: nowrap;
-      background-color: #ffffff;
-      border: 1px solid var(--sage);
-      border-radius: 999px;
-      padding: 10px 24px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 15px rgba(36, 68, 61, 0.04);
-      color: var(--ink);
-      font-size: 1rem;
-      font-weight: 600;
-    }
-
-    /* Layout principal */
-    .layout-principal {
-      display: flex;
-      flex-direction: row;
+    .site-frame {
       width: 100%;
-      align-items: flex-start;
+      min-height: 100%;
+      display: flex;
+      background: linear-gradient(135deg, #f8f5eb 0%, #edf5ee 54%, #faeee5 100%);
     }
 
-    .sidebar-gauche {
-      width: 320px;
-      min-width: 320px;
-      background: #ffffff;
-      border-right: 1px solid var(--line);
-      padding: 24px;
-      height: 100vh;
-      position: sticky;
-      top: 0;
+    .side-library {
+      width: 15.5rem;
+      flex: 0 0 15.5rem;
+      min-height: 100%;
+      background: rgba(255,255,252,.84);
+      border-right: 1px solid rgba(53,91,78,.12);
+      padding: 1.5rem 1rem;
+      box-shadow: 12px 0 35px rgba(38,73,61,.04);
       overflow-y: auto;
-      z-index: 50;
-      box-shadow: 4px 0 20px rgba(36, 68, 61, 0.03);
     }
 
-    .contenu-droite {
-      flex: 1;
-      min-width: 0;
-      padding: 24px;
+    .brand-mark, .hero-title, .ritual-title { font-family: "Fraunces", serif; }
+    .brand-mark { letter-spacing: -.03em; }
+
+    .sidebar-rule {
+      height: 1px;
+      background: var(--line);
+      margin: 1rem 0;
     }
 
+    /* Style des menus déroulants de la sidebar Flask/Jinja */
     details > summary { list-style: none; cursor: pointer; }
     details > summary::-webkit-details-marker { display: none; }
-
+    
     .custom-summary {
       display: flex;
       align-items: center;
@@ -120,13 +75,12 @@
       font-weight: 600;
       padding: 8px 0;
       color: var(--ink);
-      font-family: "Alegreya", serif;
-      font-size: 1.15rem;
+      font-size: 0.95rem;
     }
 
     .custom-summary .arrow {
       color: var(--sage-deep);
-      font-size: 0.75rem;
+      font-size: 0.65rem;
       transition: transform 0.2s ease;
     }
 
@@ -134,372 +88,54 @@
       transform: rotate(90deg);
     }
 
-    .video-list {
-      list-style: none;
-      padding-left: 18px;
-      margin: 6px 0;
-    }
-
-    /* Carte Oracle */
-    .oracle-flip-container {
-      perspective: 1000px;
-      width: 100%;
-      max-width: 320px;
-      height: 480px;
-      cursor: pointer;
-      margin: 0 auto;
-    }
-    .carte {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      text-align: center;
-      transition: transform 0.6s;
-      transform-style: preserve-3d;
-      box-shadow: 0 10px 25px rgba(36, 68, 61, 0.12);
-      border-radius: 1rem;
-    }
-    .oracle-flip-container.flipped .carte {
-      transform: rotateY(180deg);
-    }
-    .card-front, .card-back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      border-radius: 1rem;
-      display: flex;
-      flex-direction: column;
-      padding: 24px;
-      box-sizing: border-box;
-    }
-    .card-front {
-      background: #ffffff;
-      border: 2px solid var(--sage);
-      justify-content: space-between;
-    }
-    .card-back {
-      background: #ffffff;
-      color: var(--ink);
-      transform: rotateY(180deg);
-      border: 2px solid var(--sage-deep);
-      text-align: center;
-      justify-content: center;
-      align-items: center;
-      overflow-y: auto;
-    }
-    .card-img-src {
-      width: 100%;
-      height: 330px;
-      object-fit: cover;
-      border-radius: 0.75rem;
-    }
-
     .fav-star {
       cursor: pointer;
       color: #cbd5e1;
-      margin-left: 8px;
       font-size: 1.1em;
       user-select: none;
       transition: color 0.2s;
     }
-    .fav-star.active { color: #e056fd; }
+    .fav-star.active { color: #d58e63; } /* Couleur orange du thème Canva */
 
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-    .modal-content {
-      background: white;
-      padding: 20px;
-      border-radius: 1rem;
-      width: 90%;
-      max-width: 700px;
-      position: relative;
-    }
-    .modal-content iframe {
+    .main-canvas {
       width: 100%;
-      height: 400px;
-      border: none;
-      border-radius: 0.5rem;
-    }
-    .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 24px;
-      cursor: pointer;
-      color: var(--ink);
+      min-width: 0;
+      padding: 1rem 1.35rem 2.5rem;
+      position: relative;
+      overflow: hidden;
     }
 
-    @media (max-width: 1023px) {
-      .layout-principal { flex-direction: column; }
-      .sidebar-gauche {
-        width: 100%;
-        min-width: 100%;
-        height: auto;
-        max-height: 40vh;
-        position: relative;
-        border-right: none;
-        border-bottom: 2px solid var(--line);
-      }
-      .top-info-bar {
-        flex-direction: column;
-        gap: 6px;
-        border-radius: 1rem;
-        white-space: normal;
-        text-align: center;
-      }
+    .main-canvas::before {
+      content: "";
+      position: fixed;
+      z-index: 0;
+      width: 27rem;
+      height: 27rem;
+      border-radius: 999px;
+      right: -11rem;
+      top: -9rem;
+      background: rgba(213,234,217,.5);
+      filter: blur(8px);
+      pointer-events: none;
     }
-  </style>
- </head>
- <body>
-  <div class="site-shell">
-   
-   <!-- En-tête -->
-   <header class="w-full px-5 pt-5 sm:px-8 lg:px-12">
-    <div class="header-line mx-auto rounded-full px-6 py-3.5 bg-white/80 backdrop-blur-md shadow-sm border border-[#dcebe2]">
-     <div class="flex items-center gap-3 shrink-0">
-      <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#dcebe2] text-[#537e6d]">
-       <i data-lucide="leaf" class="h-5 w-5"></i>
-      </div>
-      <p class="serif m-0 font-bold text-xl tracking-wide text-[#24443d]">ISA-ZEN</p>
-     </div>
-     <p class="m-0 text-right text-sm sm:text-base font-medium text-[#537e6d] shrink-0 ml-4">Des créateurs pour accompagner ton chemin</p>
-    </div>
-   </header>
 
-   <div class="layout-principal mt-6">
-    
-    <!-- Sidebar -->
-    <aside class="sidebar-gauche">
-        <h2 class="serif text-2xl font-bold mb-5 text-[#24443d] flex items-center gap-2">
-            <i data-lucide="library" class="h-6 w-6 text-[#537e6d]"></i> Bibliothèque
-        </h2>
+    .content-stack { position: relative; z-index: 1; max-width: 76rem; margin: 0 auto; }
 
-        <details open id="favoris-section" style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px dashed var(--sage-deep);">
-            <summary class="custom-summary" style="color: #e056fd;"><span class="arrow">▶</span><span>⭐ Mes Favoris</span></summary>
-            <ul id="favoris-list" class="video-list" style="padding-left: 5px;">
-                <li style="color: gray; font-style: italic;" id="no-fav-text">Aucun favori</li>
-            </ul>
-        </details>
+    .daily-strip {
+      box-shadow: 0 8px 22px rgba(37,70,59,.05);
+      border: 1px solid rgba(53,91,78,.1);
+    }
 
-        {% for auteur, categories in data.items() %}
-            <details style="margin-bottom: 12px;"> 
-                <summary class="custom-summary"><span class="arrow">▶</span><span>{{ auteur }}</span></summary>
-                
-                {% for categorie, videos in categories.items() %}
-                    <details style="margin-left: 15px; margin-top: 6px;">
-                        <summary class="custom-summary" style="font-size: 1.05rem; font-weight: 500;"><span class="arrow">▶</span><span>{{ categorie }}</span></summary>
-                        
-                        <ul class="video-list">
-                            {% for video in videos %}
-                                <li style="display: flex; justify-content: space-between; align-items: center; margin: 6px 0;">
-                                    <a href="javascript:void(0);" onclick="ouvrirVideo('{{ video.id }}')" style="color: var(--ink); text-decoration: none; font-size: 0.95rem;" class="hover:underline">🎬 {{ video.titre }}</a>
-                                    <span class="fav-star" id="star-{{ video.id }}" onclick="toggleFavori('{{ video.id }}', '{{ video.titre | escape }}')">★</span>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </details>
-                {% endfor %}
-            </details>
-        {% endfor %}
-    </aside>
+    .hero-card { min-height: 22rem; box-shadow: 0 22px 55px rgba(34,68,57,.17); }
+    .hero-overlay { background: linear-gradient(90deg, rgba(25,59,49,.84) 0%, rgba(25,59,49,.57) 48%, rgba(25,59,49,.14) 100%); }
+    .hero-title { letter-spacing: -.04em; }
 
-    <!-- Contenu Droite -->
-    <div class="contenu-droite">
-     <main>
-      
-      <!-- Bandes d'informations supérieures -->
-      <div class="top-info-bar mx-auto max-w-6xl">
-        <span>📅 Nous sommes le <strong id="date-fr">Chargement...</strong></span>
-        <span>•</span>
-        <span>⏰ Il est <strong id="heure-fr">--:--</strong></span>
-        <span>•</span>
-        <span>🔮 Phase Lunaire : <strong id="lune-info" class="text-[#537e6d]">Pleine Lune</strong></span>
-      </div>
+    .soft-button { transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease; }
+    .soft-button:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(22,58,47,.2); filter: brightness(1.02); }
 
-      <!-- Bannière Hero en dur -->
-      <section class="w-full pb-14 pt-2">
-       <div class="hero-container relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] shadow-[0_20px_55px_rgba(34,68,57,0.16)] text-white">
-        <div class="relative z-10 flex min-h-[30rem] max-w-2xl flex-col justify-center px-7 py-14 sm:px-12 lg:min-h-[33rem] lg:px-16">
-         <p class="mb-4 inline-flex w-fit rounded-full bg-white/20 px-4 py-2 font-semibold tracking-wide text-sm">À TON RYTHME</p>
-         <h1 class="serif m-0 max-w-xl font-bold text-4xl sm:text-5xl leading-tight">Trouve la voix qui t’accompagne aujourd’hui.</h1>
-         <p class="mt-6 max-w-lg leading-relaxed text-emerald-100">Explore des univers de méditation, de guidance, d'hypnose et de développement personnel, choisis selon ce dont tu as besoin maintenant.</p>
-         <div class="mt-8">
-          <button id="explore-button" class="inline-flex items-center gap-2 rounded-full px-6 py-3.5 font-semibold shadow-lg transition bg-[#f4ddc6] text-[#24443d] hover:bg-[#e6ccb2]" type="button"> 
-           <span>Explorer les créateurs</span> <i data-lucide="arrow-down" class="h-4 w-4"></i> 
-          </button>
-         </div>
-        </div>
-       </div>
-      </section>
-
-      <!-- Oracle & Horoscope -->
-      <section id="creators" class="w-full pb-14">
-       <div class="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-        
-        <!-- Carte Oracle -->
-        <div class="rounded-[2rem] bg-white p-8 shadow-sm border border-[#dcebe2] text-center">
-         <h2 class="serif text-2xl font-bold mb-6 text-[#24443d]">☽ Énergie du jour ☾</h2>
-         
-         <div class="oracle-flip-container" onclick="retournerCarte(this)">
-          <div class="carte">
-           <div class="card-front">
-            <div class="w-full flex justify-center">
-             <img class="card-img-src" src="{{ carte.image }}" alt="Carte Oracle">
-            </div>
-            <div class="mt-4 font-bold text-lg text-[#24443d]">{{ carte.nom }}</div>
-            <p class="text-xs text-gray-400 italic">Cliquez pour retourner la carte</p>
-           </div>
-           <div class="card-back p-6">
-            <h3 class="serif text-2xl font-bold text-[#537e6d] mb-3 text-center">{{ carte.nom }}</h3>
-            <hr class="border-[#dcebe2] mb-4 w-1/2 mx-auto">
-            <p class="text-base leading-relaxed text-[#24443d] text-center font-medium">{{ carte.message }}</p>
-           </div>
-          </div>
-         </div>
-        </div>
-
-        <!-- Horoscope Centré en Comfortaa -->
-        <div class="rounded-[2rem] bg-white p-8 shadow-sm border border-[#dcebe2] h-full text-center flex flex-col justify-center items-center min-h-[480px]">
-         <h3 class="serif text-2xl font-bold mb-4 text-[#24443d] flex items-center justify-center gap-2">
-          <span>☀️</span> Horoscope du jour
-         </h3>
-         <div class="font-comfortaa text-xl sm:text-2xl leading-relaxed text-[#24443d] font-normal text-center">
-          {{ horoscope | safe }}
-         </div>
-        </div>
-
-       </div>
-      </section>
-
-     </main>
-     
-     <footer class="w-full pb-8">
-      <div class="mx-auto max-w-6xl rounded-[1.25rem] px-6 py-5 text-center bg-white/70 border border-[#dcebe2]">
-       <p class="serif m-0 italic text-[#24443d]">Prenez soin de vous, un instant après l'autre.</p>
-      </div>
-     </footer>
-    </div>
-
-   </div>
-  </div>
-
-  <div id="videoModal" class="modal">
-   <div class="modal-content">
-    <span class="close-btn" onclick="fermerVideo()">&times;</span>
-    <iframe id="modal-player" src="" allowfullscreen></iframe>
-   </div>
-  </div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      lucide.createIcons();
-
-      window.retournerCarte = function(element) {
-        element.classList.toggle('flipped');
-      };
-
-      function afficherDateEtHeure() {
-        const maintenant = new Date();
-        const optionsDate = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-        let dateStr = maintenant.toLocaleDateString('fr-FR', optionsDate);
-        dateStr = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
-        
-        const heureStr = maintenant.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-        
-        if(document.getElementById('date-fr')) document.getElementById('date-fr').innerText = dateStr;
-        if(document.getElementById('heure-fr')) document.getElementById('heure-fr').innerText = heureStr;
-      }
-
-      function calculerPhaseLune() {
-        const descs = ["🌑 Nouvelle Lune", "🌒 Premier Croissant", "🌓 Premier Quartier", "🌔 Lune Gibbeuse", "🌕 Pleine Lune", "🌖 Lune Disséminante", "🌗 Dernier Quartier", "🌘 Dernier Croissant"];
-        const maintenant = new Date();
-        const reference = new Date(2026, 0, 18, 14, 53); 
-        const cycle = 29.530588853; 
-        const diffMS = maintenant - reference;
-        const diffJours = diffMS / (1000 * 60 * 60 * 24);
-        const positionDansCycle = (diffJours % cycle) / cycle;
-        const index = Math.floor(positionDansCycle * 8) % 8;
-        if(document.getElementById('lune-info')) document.getElementById('lune-info').innerText = descs[index];
-      }
-
-      afficherDateEtHeure();
-      calculerPhaseLune();
-      setInterval(afficherDateEtHeure, 60000);
-
-      window.ouvrirVideo = function(id) {
-        document.getElementById('modal-player').src = "https://www.youtube.com/embed/" + id + "?autoplay=1";
-        document.getElementById('videoModal').style.display = 'flex';
-      };
-      window.fermerVideo = function() {
-        document.getElementById('videoModal').style.display = 'none';
-        document.getElementById('modal-player').src = "";
-      };
-      window.onclick = function(event) {
-        let modal = document.getElementById('videoModal');
-        if (event.target == modal) { fermerVideo(); }
-      };
-
-      let favoris = JSON.parse(localStorage.getItem('videosFavoris')) || [];
-
-      window.toggleFavori = function(id, titre) {
-        const index = favoris.findIndex(item => item.id === id);
-        if (index === -1) {
-            favoris.push({id: id, titre: titre});
-            if(document.getElementById(`star-${id}`)) document.getElementById(`star-${id}`).classList.add('active');
-        } else {
-            favoris.splice(index, 1);
-            if(document.getElementById(`star-${id}`)) document.getElementById(`star-${id}`).classList.remove('active');
-        }
-        localStorage.setItem('videosFavoris', JSON.stringify(favoris));
-        afficherFavoris();
-      };
-
-      function afficherFavoris() {
-        const list = document.getElementById('favoris-list');
-        list.innerHTML = '';
-        
-        if (favoris.length === 0) {
-            list.innerHTML = '<li style="color: gray; font-style: italic;" id="no-fav-text">Aucun favori</li>';
-            return;
-        }
-
-        favoris.forEach(video => {
-            const li = document.createElement('li');
-            li.style.display = "flex";
-            li.style.justifyContent = "space-between";
-            li.style.alignItems = "center";
-            li.style.margin = "6px 0";
-            li.innerHTML = `
-                <a href="javascript:void(0);" onclick="ouvrirVideo('${video.id}')" style="color: var(--ink); text-decoration: none; font-size: 0.95rem;">🎬 ${video.titre}</a>
-                <span class="fav-star active" onclick="toggleFavori('${video.id}', '${video.titre}')">★</span>
-            `;
-            list.appendChild(li);
-        });
-
-        favoris.forEach(video => {
-            const star = document.getElementById(`star-${video.id}`);
-            if(star) star.classList.add('active');
-        });
-      }
-
-      afficherFavoris();
-
-      const exploreButton = document.getElementById("explore-button");
-      const creatorsSection = document.getElementById("creators");
-      if(exploreButton) {
-        exploreButton.addEventListener("click", function () {
-          creatorsSection.scrollIntoView({ behavior: "smooth", block: "start" });
-        });
-      }
-    });
-  </script>
- </body>
-</html>
+    .ritual-card {
+      border: 1px solid rgba(85,124,109,.18);
+      box-shadow: 0 13px 30px rgba(39,73,62,.06);
+      min-height: 15rem;
+    }
+    .ritual-oracle { background: linear-gradient(145deg, #e7f0e8
