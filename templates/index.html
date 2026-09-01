@@ -6,7 +6,7 @@
   <title>ISA-ZEN</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@400;500;600;700&amp;family=Comfortaa:wght@400;600;700&amp;family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@400;500;600;700&family=Comfortaa:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Liens PWA (Application) -->
   <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
@@ -43,16 +43,46 @@
     }
 
     .serif { font-family: "Alegreya", serif; }
-    .font-comfortaa { font-family: "Comfortaa", cursive, sans-serif; }
+    .font-comfortaa { font-family: "Comfortaa", cursive, sans-serif !important; }
 
     .hero-image-wrap::after {
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, rgba(25, 58, 48, 0.76) 0%, rgba(25, 58, 48, 0.33) 62%, rgba(25, 58, 48, 0.08) 100%);
+      background: linear-gradient(90deg, rgba(25, 58, 48, 0.7) 0%, rgba(25, 58, 48, 0.3) 60%, rgba(25, 58, 48, 0.05) 100%);
       content: "";
     }
 
-    /* --- LAYOUT FLEXBOX AVEC SIDEBAR À GAUCHE HARMONISÉE --- */
+    /* --- EN-TÊTE : UNE SEULE LIGNE GARANTIE --- */
+    .canva-header-container {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      white-space: nowrap !important;
+      width: 100% !important;
+    }
+
+    /* --- BANDEAU INFOS EN HAUT DE LA BANNIÈRE --- */
+    .top-info-bar {
+      font-family: "Comfortaa", cursive, sans-serif;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      white-space: nowrap;
+      background-color: #ffffff;
+      border: 1px solid var(--sage);
+      border-radius: 999px;
+      padding: 10px 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(36, 68, 61, 0.04);
+      color: var(--ink);
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    /* --- LAYOUT PRINCIPAL AVEC BIBLIOTHÈQUE À GAUCHE --- */
     .layout-principal {
       display: flex;
       flex-direction: row;
@@ -80,7 +110,7 @@
       padding: 24px;
     }
 
-    /* Style des menus déroulants de la sidebar */
+    /* Menus déroulants de la bibliothèque */
     details > summary { list-style: none; cursor: pointer; }
     details > summary::-webkit-details-marker { display: none; }
 
@@ -211,9 +241,7 @@
     }
 
     @media (max-width: 1023px) {
-      .layout-principal {
-        flex-direction: column;
-      }
+      .layout-principal { flex-direction: column; }
       .sidebar-gauche {
         width: 100%;
         min-width: 100%;
@@ -223,15 +251,22 @@
         border-right: none;
         border-bottom: 2px solid var(--line);
       }
+      .top-info-bar {
+        flex-direction: column;
+        gap: 6px;
+        border-radius: 1rem;
+        white-space: normal;
+        text-align: center;
+      }
     }
   </style>
  </head>
  <body data-template-id="__page-root">
   <div class="site-shell">
    
-   <!-- En-tête forcé strictement sur une seule ligne -->
+   <!-- EN-TÊTE : ISA-ZEN ET LA PHRASE SUR UNE SEULE LIGNE -->
    <header class="w-full px-5 pt-5 sm:px-8 lg:px-12">
-    <div data-template-id="header-panel" class="canva-header mx-auto flex max-w-6xl items-center justify-between flex-nowrap rounded-full px-6 py-3.5 bg-white/80 backdrop-blur-md shadow-sm border border-[#dcebe2]" style="white-space: nowrap;">
+    <div data-template-id="header-panel" class="canva-header-container mx-auto rounded-full px-6 py-3.5 bg-white/80 backdrop-blur-md shadow-sm border border-[#dcebe2]">
      <div class="flex items-center gap-3 shrink-0">
       <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#dcebe2] text-[#537e6d]" aria-hidden="true">
        <i data-lucide="leaf" class="h-5 w-5"></i>
@@ -242,10 +277,10 @@
     </div>
    </header>
 
-   <!-- Structure principale : Sidebar harmonisée à gauche + Design Canva à droite -->
+   <!-- STRUCTURE PRINCIPALE : BIBLIOTHÈQUE À GAUCHE + ACCUEIL CANVA À DROITE -->
    <div class="layout-principal mt-6">
     
-    <!-- SIDEBAR BIBLIOTHÈQUE & FAVORIS À GAUCHE -->
+    <!-- SIDEBAR BIBLIOTHÈQUE & FAVORIS (GAUCHE) -->
     <aside class="sidebar-gauche">
         <h2 class="serif text-2xl font-bold mb-5 text-[#24443d] flex items-center gap-2">
             <i data-lucide="library" class="h-6 w-6 text-[#537e6d]"></i> Bibliothèque
@@ -258,18 +293,16 @@
             </ul>
         </details>
 
-        <!-- Boucle sur les Auteurs de Flask -->
+        <!-- Auteurs et sous-catégories de la base de données Flask -->
         {% for auteur, categories in data.items() %}
             <details style="margin-bottom: 12px;"> 
                 <summary class="custom-summary"><span class="arrow">▶</span><span>{{ auteur }}</span></summary>
                 
-                <!-- Boucle sur les Catégories -->
                 {% for categorie, videos in categories.items() %}
                     <details style="margin-left: 15px; margin-top: 6px;">
                         <summary class="custom-summary" style="font-size: 1.05rem; font-weight: 500;"><span class="arrow">▶</span><span>{{ categorie }}</span></summary>
                         
                         <ul class="video-list">
-                            <!-- Boucle sur les vidéos -->
                             {% for video in videos %}
                                 <li style="display: flex; justify-content: space-between; align-items: center; margin: 6px 0;">
                                     <a href="javascript:void(0);" onclick="ouvrirVideo('{{ video.id }}')" style="color: var(--ink); text-decoration: none; font-size: 0.95rem;" class="hover:underline">🎬 {{ video.titre }}</a>
@@ -283,14 +316,24 @@
         {% endfor %}
     </aside>
 
-    <!-- CONTENU DROITE -->
+    <!-- ACCUEIL PRINCIPAL (DROITE) -->
     <div class="contenu-droite">
      <main>
-      <!-- Section Hero Canva -->
+      
+      <!-- BANDEAU INFOS EN HAUT : DATE, HEURE & PHASE LUNAIRE SUR UNE SEULE LIGNE EN COMFORTAA -->
+      <div class="top-info-bar mx-auto max-w-6xl">
+        <span>📅 Nous sommes le <strong id="date-fr">Chargement...</strong></span>
+        <span>•</span>
+        <span>⏰ Il est <strong id="heure-fr">--:--</strong></span>
+        <span>•</span>
+        <span>🔮 Phase Lunaire : <strong id="lune-info" class="text-[#537e6d]">Pleine Lune</strong></span>
+      </div>
+
+      <!-- BANNIÈRE CANVA AVEC L'IMAGE DE JARDIN ZEN ET LE TEXTE EXACT -->
       <section class="w-full pb-14 pt-2">
        <div class="relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] shadow-[0_20px_55px_rgba(34,68,57,0.16)] bg-[#24443d]">
         <div class="hero-image-wrap absolute inset-0">
-         <img data-template-id="hero-image" class="canva-image h-full w-full object-cover opacity-65" src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80" loading="lazy">
+         <img data-template-id="hero-image" class="canva-image h-full w-full object-cover opacity-80" src="https://images.unsplash.com/photo-1545232979-fbf34fe378a8?auto=format&fit=crop&w=1200&q=80" loading="lazy" alt="Jardin Zen">
         </div>
         <div class="relative z-10 flex min-h-[30rem] max-w-2xl flex-col justify-center px-7 py-14 sm:px-12 lg:min-h-[33rem] lg:px-16 text-white">
          <p data-template-id="hero-kicker" class="canva-text reveal mb-4 inline-flex w-fit rounded-full bg-white/20 px-4 py-2 font-semibold tracking-wide text-sm">À TON RYTHME</p>
@@ -305,11 +348,11 @@
        </div>
       </section>
 
-      <!-- SECTION INTERACTIVE : ORACLE, DATE/HEURE/LUNE & HOROSCOPE -->
+      <!-- MODULES INTERACTIFS : ORACLE & HOROSCOPE AGRANDI CONFORMAA -->
       <section id="creators" class="w-full pb-14">
        <div class="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
         
-        <!-- Colonne Gauche : Carte Oracle du Jour -->
+        <!-- Carte Oracle -->
         <div class="rounded-[2rem] bg-white p-8 shadow-sm border border-[#dcebe2] text-center">
          <h2 class="serif text-2xl font-bold mb-6 text-[#24443d]">☽ Énergie du jour ☾</h2>
          
@@ -331,29 +374,13 @@
          </div>
         </div>
 
-        <!-- Colonne Droite : Date/Heure, Phase Lunaire & Horoscope (Conformaa agrandi) -->
-        <div class="flex flex-col gap-6">
-         <!-- Bloc Date, Heure & Lune -->
-         <div class="rounded-[2rem] bg-white p-6 shadow-sm border border-[#dcebe2]">
-          <p class="text-base font-medium text-[#24443d] mb-2">
-           📅 Nous sommes le <strong id="date-fr">Chargement...</strong>
-          </p>
-          <p class="text-base font-medium text-[#24443d] mb-2">
-           ⏰ Il est <strong id="heure-fr">--:--</strong>
-          </p>
-          <p class="text-base font-medium text-[#24443d]">
-           🔮 Phase Lunaire : <strong id="lune-info" class="text-[#537e6d]">Pleine Lune</strong>
-          </p>
-         </div>
-
-         <!-- Bloc Horoscope en police Comfortaa agrandie -->
-         <div class="rounded-[2rem] bg-white p-8 shadow-sm border border-[#dcebe2]">
-          <h3 class="serif text-2xl font-bold mb-4 text-[#24443d] flex items-center gap-2">
-           <span>☀️</span> Horoscope du jour
-          </h3>
-          <div class="font-comfortaa text-lg sm:text-xl leading-relaxed text-[#24443d]">
-           {{ horoscope | safe }}
-          </div>
+        <!-- Horoscope agrandi (Comfortaa) -->
+        <div class="rounded-[2rem] bg-white p-8 shadow-sm border border-[#dcebe2] h-full">
+         <h3 class="serif text-2xl font-bold mb-4 text-[#24443d] flex items-center gap-2">
+          <span>☀️</span> Horoscope du jour
+         </h3>
+         <div class="font-comfortaa text-xl sm:text-2xl leading-relaxed text-[#24443d] font-normal">
+          {{ horoscope | safe }}
          </div>
         </div>
 
@@ -389,7 +416,7 @@
         element.classList.toggle('flipped');
       };
 
-      // Gestion de la date, de l'heure et des phases lunaires en direct
+      // Date, heure & lune en temps réel
       function afficherDateEtHeure() {
         const maintenant = new Date();
         const optionsDate = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
@@ -418,7 +445,7 @@
       calculerPhaseLune();
       setInterval(afficherDateEtHeure, 60000);
 
-      // Gestion de la modale vidéo
+      // Modale YouTube
       window.ouvrirVideo = function(id) {
         document.getElementById('modal-player').src = "https://www.youtube.com/embed/" + id + "?autoplay=1";
         document.getElementById('videoModal').style.display = 'flex';
@@ -432,7 +459,7 @@
         if (event.target == modal) { fermerVideo(); }
       };
 
-      // Gestion des favoris de la bibliothèque
+      // Gestion des favoris
       let favoris = JSON.parse(localStorage.getItem('videosFavoris')) || [];
 
       window.toggleFavori = function(id, titre) {
@@ -478,7 +505,7 @@
 
       afficherFavoris();
 
-      // Bouton explorer
+      // Bouton de défilement
       const exploreButton = document.getElementById("explore-button");
       const creatorsSection = document.getElementById("creators");
       if(exploreButton) {
