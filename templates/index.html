@@ -38,25 +38,23 @@
 
     .font-comfortaa { font-family: "Comfortaa", cursive, sans-serif !important; }
 
-    /* --- LAYOUT RESPONSIVE (PC / Tablette / Mobile / Paysage) --- */
     .site-frame {
       width: 100%;
       min-height: 100vh;
       display: flex;
-      flex-direction: column; /* Par défaut (Mobile & Tablette) = Empilé */
+      flex-direction: column;
       background: linear-gradient(135deg, #f8f5eb 0%, #edf5ee 54%, #faeee5 100%);
     }
 
     @media (min-width: 1024px) {
       .site-frame {
-        flex-direction: row; /* Sur grand écran = Côte à côte */
+        flex-direction: row;
       }
     }
 
-    /* --- SIDEBAR RESPONSIVE --- */
     .side-library {
       width: 100%;
-      max-height: 35vh; /* Empêche la sidebar de prendre tout l'écran en mode paysage */
+      max-height: 35vh;
       overflow-y: auto;
       background: rgba(255, 255, 252, 0.95);
       border-bottom: 1px solid rgba(53,91,78,.12);
@@ -119,7 +117,6 @@
     }
     .fav-star.active { color: #d58e63; }
 
-    /* --- CONTENU PRINCIPAL --- */
     .main-canvas {
       flex: 1;
       width: 100%;
@@ -165,11 +162,10 @@
     .ritual-oracle { background: linear-gradient(145deg, #e7f0e8, #fbf8ef); }
     .ritual-horoscope { background: linear-gradient(145deg, #f8eddf, #fbf8ef); }
 
-    /* --- CSS CARTE ORACLE INTELLIGENTE --- */
     .oracle-flip-container {
       perspective: 1000px;
       width: 100%;
-      min-height: 420px; /* Assure que la carte ne s'écrase pas */
+      min-height: 460px;
       cursor: pointer;
     }
     .carte {
@@ -196,7 +192,6 @@
       border: 1px solid var(--sage);
     }
 
-    /* Boîtes de texte défilantes pour éviter les débordements sur écran horizontal */
     .scroll-box {
       width: 100%;
       height: 100%;
@@ -204,7 +199,6 @@
       padding-right: 5px;
     }
 
-    /* --- MODAL YOUTUBE RESPONSIVE --- */
     .modal {
       display: none;
       position: fixed;
@@ -225,7 +219,7 @@
     }
     .modal-content iframe {
       width: 100%;
-      aspect-ratio: 16 / 9; /* GARANTIT L'ADAPTATION 100% RESPONSIVE */
+      aspect-ratio: 16 / 9;
       height: auto;
       border: none;
       border-radius: 0.5rem;
@@ -263,7 +257,6 @@
     <div class="sidebar-rule"></div>
     
     <nav class="sidebar-nav flex flex-col gap-1" aria-label="Créateurs et favoris">
-        <!-- Favoris -->
         <details open id="favoris-section" class="mb-3 border-b border-dashed border-[rgba(53,91,78,.2)] pb-3">
             <summary class="custom-summary text-[#d58e63]">
                 <span class="arrow">▶</span>⭐ Mes Favoris
@@ -273,7 +266,6 @@
             </ul>
         </details>
 
-        <!-- Boucle Jinja sur les Auteurs -->
         {% for auteur, categories in data.items() %}
             <details class="mb-1"> 
                 <summary class="custom-summary">
@@ -334,24 +326,23 @@
       </div>
      </section>
 
-     <!-- MODULES INTERACTIFS : ORACLE ET HOROSCOPE (Grille Responsive) -->
+     <!-- MODULES INTERACTIFS : ORACLE ET HOROSCOPE -->
      <section class="mt-7 grid gap-4 md:grid-cols-2" aria-label="Rituels du jour">
       
-      <!-- CARTE ORACLE FLIP -->
+      <!-- CARTE ORACLE FLIP (Image agrandie : h-64 sm:h-72 md:h-80) -->
       <article class="canva-card ritual-card ritual-oracle rounded-[1.4rem] p-6 flex flex-col justify-center">
        <h2 class="serif text-2xl font-bold mb-4 text-[#28493f] text-center">☽ Énergie du jour ☾</h2>
        
        <div class="oracle-flip-container w-full" onclick="retournerCarte(this)">
         <div class="carte">
-         <!-- Face avant de la carte -->
-         <div class="card-front flex flex-col items-center justify-center p-3">
-          <!-- OBJECT-CONTAIN est essentiel pour que l'image ne soit jamais rognée -->
-          <img class="w-full h-48 sm:h-56 md:h-60 object-contain rounded-[1rem] mb-3" src="{{ carte.image }}" alt="Carte Oracle">
+         <!-- Face avant -->
+         <div class="card-front flex flex-col items-center justify-center p-2">
+          <img class="w-full h-64 sm:h-72 md:h-80 object-contain rounded-[1rem] mb-2" src="{{ carte.image }}" alt="Carte Oracle">
           <p class="font-bold text-lg text-[#28493f] m-0">{{ carte.nom }}</p>
           <p class="text-xs text-[#557c6d] italic mt-1">Cliquez pour retourner</p>
          </div>
          
-         <!-- Face arrière de la carte -->
+         <!-- Face arrière -->
          <div class="card-back p-5 flex flex-col items-center justify-center">
           <div class="scroll-box flex flex-col items-center justify-center text-center">
             <h3 class="serif text-xl font-bold text-[#557c6d] mb-2">{{ carte.nom }}</h3>
@@ -395,12 +386,10 @@
     document.addEventListener("DOMContentLoaded", function () {
       lucide.createIcons();
 
-      // Retourner la carte Oracle
       window.retournerCarte = function(element) {
         element.classList.toggle('flipped');
       };
 
-      // Heure, Date et Phase Lunaire
       function afficherDateEtHeure() {
         const maintenant = new Date();
         const optionsDate = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
@@ -429,7 +418,6 @@
       calculerPhaseLune();
       setInterval(afficherDateEtHeure, 60000);
 
-      // Gestion de la modale vidéo YouTube
       window.ouvrirVideo = function(id) {
         document.getElementById('modal-player').src = "https://www.youtube.com/embed/" + id + "?autoplay=1";
         document.getElementById('videoModal').style.display = 'flex';
@@ -443,7 +431,6 @@
         if (event.target == modal) { fermerVideo(); }
       };
 
-      // Gestion des favoris
       let favoris = JSON.parse(localStorage.getItem('videosFavoris')) || [];
 
       window.toggleFavori = function(id, titre) {
