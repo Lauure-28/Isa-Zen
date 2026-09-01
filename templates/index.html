@@ -4,27 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Espace Zen</title>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400&family=Playfair+Display:wght@400;700&family=Alegreya:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
     
     <!-- Liens PWA (Application) -->
     <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-    <meta name="theme-color" content="#b38f4d">
+    <meta name="theme-color" content="#537e6d">
 
     <style>
-        /* Variables CSS */
         :root {
-            --bg-body: #faf8f5; 
+            --ink: #24443d;
+            --sage: #dcebe2;
+            --sage-deep: #537e6d;
+            --cream: #fbf8ef;
+            --peach: #f4ddc6;
+            --line: rgba(52, 91, 77, 0.16);
         }
 
-        /* --- LE RESET ABSOLU POUR FORCER L'AGENCEMENT --- */
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
         body, html {
             margin: 0 !important;
             padding: 0 !important;
-            background-color: var(--bg-body);
+            background-color: var(--cream);
+            color: var(--ink);
+            font-family: "DM Sans", sans-serif;
             width: 100% !important;
             overflow-x: hidden !important;
         }
+
+        .serif { font-family: "Alegreya", serif; }
 
         /* Conteneur principal en Flexbox strict */
         .layout {
@@ -35,7 +45,7 @@
             align-items: flex-start !important;
         }
         
-        /* Le menu prend SA place et reste collé (sticky) pour ne pas flotter au-dessus du reste */
+        /* La sidebar (Bibliothèque) */
         .sidebar {
             position: sticky !important; 
             top: 0 !important;
@@ -45,14 +55,13 @@
             height: 100vh !important; 
             overflow-y: auto !important; 
             background-color: #ffffff !important;
-            border-right: 2px solid #e8decb !important;
+            border-right: 1px solid var(--line) !important;
             z-index: 100 !important;
-            padding: 20px !important;
+            padding: 24px !important;
             box-sizing: border-box !important;
-            flex-shrink: 0 !important; /* Interdit au menu de s'écraser */
+            flex-shrink: 0 !important;
         }
         
-        /* Désactivation de la flèche native du navigateur et mise en place de notre propre flèche alignée */
         details > summary {
             list-style: none;
         }
@@ -63,19 +72,20 @@
         .custom-summary {
             cursor: pointer;
             padding: 8px 0;
-            font-weight: bold;
-            font-size: 1.1rem;
+            font-weight: 600;
+            font-size: 1.05rem;
             display: flex;
-            align-items: flex-start; /* Aligne tout en haut pour que le texte sur 2 lignes ne décale pas la flèche */
+            align-items: flex-start;
             gap: 10px;
             text-align: left;
+            color: var(--ink);
         }
 
         .custom-summary .arrow {
-            color: #b8860b;
+            color: var(--sage-deep);
             font-size: 0.75rem;
             transition: transform 0.2s ease;
-            margin-top: 4px; /* Ajuste pour l'aligner pile avec la première ligne de texte */
+            margin-top: 5px;
             flex-shrink: 0;
         }
 
@@ -83,10 +93,10 @@
             transform: rotate(90deg);
         }
 
-        /* Le contenu prend LE RESTE de la place sans jamais passer sous le menu */
+        /* Le contenu principal */
         .content {
             flex-grow: 1 !important;
-            min-width: 0 !important; /* ⚠️ LA CLÉ : Empêche l'image de déborder et de casser la page */
+            min-width: 0 !important;
             padding: 40px !important;
             box-sizing: border-box !important;
             margin: 0 !important;
@@ -97,52 +107,141 @@
             display: flex !important;
             flex-direction: row !important;
             flex-wrap: wrap !important; 
-            gap: 40px !important;
+            gap: 30px !important;
             width: 100% !important;
         }
 
         .colonne-gauche {
-            flex: 1 1 300px !important;
+            flex: 1 1 320px !important;
             min-width: 0 !important;
-            max-width: 400px !important; /* Limite la taille de la carte oracle */
+            max-width: 400px !important;
+            background: #ffffff;
+            padding: 24px;
+            border-radius: 1.5rem;
+            border: 1px solid var(--line);
+            box-shadow: 0 10px 30px rgba(44, 74, 63, 0.05);
         }
 
         .colonne-droite {
-            flex: 1 1 300px !important;
+            flex: 1 1 350px !important;
             min-width: 0 !important;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
         }
 
-        /* On bloque l'image de la carte pour qu'elle respecte sa colonne */
-        .oracle-flip-container, .carte, .card-front, .card-back {
-            width: 100% !important;
-            max-width: 100% !important;
-            box-sizing: border-box !important;
+        .header-info {
+            background: #ffffff;
+            padding: 24px;
+            border-radius: 1.5rem;
+            border: 1px solid var(--line);
+            box-shadow: 0 10px 30px rgba(44, 74, 63, 0.05);
+        }
+
+        .horoscope-center {
+            background: #ffffff;
+            padding: 24px;
+            border-radius: 1.5rem;
+            border: 1px solid var(--line);
+            box-shadow: 0 10px 30px rgba(44, 74, 63, 0.05);
+        }
+
+        /* Style de la carte Oracle à retourner */
+        .oracle-flip-container {
+            perspective: 1000px;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        .carte {
+            position: relative;
+            width: 100%;
+            height: 440px;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .oracle-flip-container.flipped .carte {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 15px;
+            box-sizing: border-box;
+            background: #fbf8ef;
+            border: 1px solid var(--sage);
+        }
+        .card-back {
+            transform: rotateY(180deg);
+            text-align: left;
+            overflow-y: auto;
+            background: #ffffff;
         }
         
         .card-image-box {
-            width: 100% !important;
-            display: flex !important;
-            justify-content: center !important;
+            width: 100%;
+            display: flex;
+            justify-content: center;
         }
 
         .card-img-src {
-            width: 100% !important;
-            max-width: 100% !important;
-            height: auto !important;
-            border-radius: 8px !important;
-            object-fit: cover !important;
+            width: 100%;
+            height: 330px;
+            border-radius: 0.75rem;
+            object-fit: cover;
         }
 
         /* Style des étoiles favoris */
         .fav-star {
             cursor: pointer;
-            color: #ccc;
+            color: #cbd5e1;
             margin-left: 8px;
             font-size: 1.1em;
             user-select: none;
+            transition: color 0.2s;
         }
         .fav-star.active {
-            color: #ffb703;
+            color: #e056fd;
+        }
+
+        /* Modal vidéo */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 1rem;
+            width: 80%;
+            max-width: 700px;
+            position: relative;
+        }
+        .modal-content iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+            border-radius: 0.5rem;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--ink);
         }
 
         /* --- RESPONSIVE MOBILE & TABLETTES --- */
@@ -157,9 +256,9 @@
                 min-width: 100% !important;
                 max-width: 100% !important;
                 height: auto !important;
-                max-height: 40vh !important; /* Permet de scroller le menu s'il est long */
+                max-height: 45vh !important;
                 border-right: none !important;
-                border-bottom: 2px solid #e8decb !important;
+                border-bottom: 1px solid var(--line) !important;
             }
             .content {
                 padding: 20px !important;
@@ -179,31 +278,32 @@
 <body>
 
 <div class="layout">
+    <!-- Barre latérale Bibliothèque & Favoris -->
     <aside class="sidebar">
-        <h2>Bibliothèque</h2>
+        <h2 class="serif text-2xl font-bold mb-5 text-[#24443d]">Bibliothèque</h2>
 
-        <details open id="favoris-section" style="margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px dashed #b38f4d;">
-            <summary class="custom-summary" style="color: #ffb703;"><span class="arrow">▶</span><span>⭐ Mes Favoris</span></summary>
-            <ul id="favoris-list" class="video-list" style="margin-top: 5px; padding-left: 5px;">
-                <li style="color: gray; font-style: italic; list-style: none;" id="no-fav-text">Aucun favori</li>
+        <details open id="favoris-section" style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px dashed var(--sage-deep);">
+            <summary class="custom-summary" style="color: #e056fd;"><span class="arrow">▶</span><span>⭐ Mes Favoris</span></summary>
+            <ul id="favoris-list" style="margin-top: 8px; padding-left: 5px; list-style: none;">
+                <li style="color: gray; font-style: italic;" id="no-fav-text">Aucun favori</li>
             </ul>
         </details>
 
-        <!-- Boucle sur les Auteurs (keys de data) -->
+        <!-- Boucle sur les Auteurs -->
         {% for auteur, categories in data.items() %}
-            <details> 
-                <summary class="custom-summary cat-title"><span class="arrow">▶</span><span>{{ auteur }}</span></summary>
+            <details style="margin-bottom: 10px;"> 
+                <summary class="custom-summary"><span class="arrow">▶</span><span>{{ auteur }}</span></summary>
                 
-                <!-- Boucle sur les Catégories de l'auteur -->
+                <!-- Boucle sur les Catégories -->
                 {% for categorie, videos in categories.items() %}
-                    <details style="margin-left: 15px;">
-                        <summary class="custom-summary auteur-name"><span class="arrow">▶</span><span>{{ categorie }}</span></summary>
+                    <details style="margin-left: 12px; margin-top: 6px;">
+                        <summary class="custom-summary" style="font-size: 0.95rem; font-weight: 500;"><span class="arrow">▶</span><span>{{ categorie }}</span></summary>
                         
-                        <ul class="video-list">
+                        <ul style="margin-top: 5px; padding-left: 10px; list-style: none;">
                             <!-- Boucle sur les vidéos -->
                             {% for video in videos %}
-                                <li style="display: flex; justify-content: space-between; align-items: center;">
-                                    <a href="javascript:void(0);" onclick="ouvrirVideo('{{ video.id }}')">{{ video.titre }}</a>
+                                <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                    <a href="javascript:void(0);" onclick="ouvrirVideo('{{ video.id }}')" style="color: #24443d; text-decoration: none; font-size: 0.9rem;" class="hover:underline">🎬 {{ video.titre }}</a>
                                     <span class="fav-star" id="star-{{ video.id }}" onclick="toggleFavori('{{ video.id }}', '{{ video.titre | escape }}')">★</span>
                                 </li>
                             {% endfor %}
@@ -214,45 +314,58 @@
         {% endfor %}
     </aside>
 
+    <!-- Contenu Principal -->
     <main class="content">
         <div class="deux-colonnes">
             
+            <!-- Colonne Gauche : Carte Oracle -->
             <div class="colonne-gauche">
-                <h1 class="oracle-main-title">☽ Énergie du jour ☾</h1>
+                <h1 class="serif text-2xl font-bold text-[#24443d] text-center">☽ Énergie du jour ☾</h1>
                 
                 <div class="oracle-flip-container" onclick="retournerCarte(this)">
                     <div class="carte">
-                        
                         <div class="card-front">
                             <div class="card-image-box">
                                 <img class="card-img-src" src="{{ carte.image }}" alt="Image Oracle">
                             </div>
-                            <div class="card-front-footer">
-                                <p class="oracle-card-front-label">{{ carte.nom }}</p>
+                            <div style="text-align: center; margin-top: 10px;">
+                                <p class="serif font-bold text-lg text-[#24443d]">{{ carte.nom }}</p>
+                                <span class="text-xs text-gray-400 italic">Cliquez pour retourner</span>
                             </div>
                         </div>
                         
-                        <div class="card-back">
+                        <div class="card-back p-4">
                             {% if carte %}
-                                <h2 class="oracle-card-label">{{ carte.nom }}</h2>
-                                <hr class="card-separator">
-                                <p class="oracle-card-message">{{ carte.message }}</p>
+                                <h2 class="serif text-xl font-bold text-[#537e6d] mb-2">{{ carte.nom }}</h2>
+                                <hr style="border-color: var(--sage); margin-bottom: 10px;">
+                                <p style="font-size: 0.95rem; line-height: 1.6;" class="text-[#24443d]">{{ carte.message }}</p>
                             {% endif %}
                         </div>
-
                     </div>
                 </div>
             </div>
 
+            <!-- Colonne Droite : Infos & Horoscope -->
             <div class="colonne-droite">
+                <!-- Bloc Date, Heure & Lune -->
                 <div class="header-info">
-                    <p>Nous sommes le <strong id="date-fr">Chargement...</strong> | Il est <strong id="heure-fr">--:--</strong></p>
-                    <p style="margin-top: 5px; font-size: 0.95em;">🔮 Phase Lunaire : <span id="lune-info">🌕 Pleine Lune</span></p>
+                    <p class="text-base font-medium text-[#24443d] mb-2">
+                        📅 Nous sommes le <strong id="date-fr">Chargement...</strong>
+                    </p>
+                    <p class="text-base font-medium text-[#24443d] mb-2">
+                        ⏰ Il est <strong id="heure-fr">--:--</strong>
+                    </p>
+                    <p class="text-base font-medium text-[#24443d]">
+                        🔮 Phase Lunaire : <strong id="lune-info" class="text-[#537e6d]">Pleine Lune</strong>
+                    </p>
                 </div>
                 
+                <!-- Bloc Horoscope -->
                 <div class="horoscope-center">
-                    <h3>☀️ Horoscope du jour</h3>
-                    <div class="horoscope-text">
+                    <h3 class="serif text-2xl font-bold mb-3 text-[#24443d] flex items-center gap-2">
+                        <span>☀️</span> Horoscope du jour
+                    </h3>
+                    <div style="font-size: 0.95rem; line-height: 1.6;" class="text-[#24443d]/90">
                         {{ horoscope | safe }}
                     </div>
                 </div>
@@ -262,6 +375,7 @@
     </main>
 </div>
 
+<!-- Modal Vidéo YouTube -->
 <div id="videoModal" class="modal">
     <div class="modal-content">
         <span class="close-btn" onclick="fermerVideo()">&times;</span>
@@ -270,11 +384,11 @@
 </div>
 
 <script>
-    // Enregistrement du Service Worker pour transformer le site en application installable
+    // Enregistrement du Service Worker
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/static/sw.js')
-            .then(() => console.log("Application prête à être installée !"))
-            .catch((err) => console.log("Erreur Service Worker : ", err));
+            .then(() => console.log("Service Worker enregistré !"))
+            .catch((err) => console.log("Erreur SW : ", err));
     }
 
     function retournerCarte(element) {
@@ -296,17 +410,14 @@
 
     function afficherDateEtHeure() {
         const maintenant = new Date();
-        
-        // Formate la date en français (ex: Samedi 29 août 2026)
         const optionsDate = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
         let dateStr = maintenant.toLocaleDateString('fr-FR', optionsDate);
         dateStr = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
         
-        // Formate l'heure en direct
         const heureStr = maintenant.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
         
-        document.getElementById('date-fr').innerText = dateStr;
-        document.getElementById('heure-fr').innerText = heureStr;
+        if(document.getElementById('date-fr')) document.getElementById('date-fr').innerText = dateStr;
+        if(document.getElementById('heure-fr')) document.getElementById('heure-fr').innerText = heureStr;
     }
 
     function calculerPhaseLune() {
@@ -318,7 +429,7 @@
         const diffJours = diffMS / (1000 * 60 * 60 * 24);
         const positionDansCycle = (diffJours % cycle) / cycle;
         const index = Math.floor(positionDansCycle * 8) % 8;
-        document.getElementById('lune-info').innerText = descs[index];
+        if(document.getElementById('lune-info')) document.getElementById('lune-info').innerText = descs[index];
     }
 
     let favoris = JSON.parse(localStorage.getItem('videosFavoris')) || [];
@@ -341,7 +452,7 @@
         list.innerHTML = '';
         
         if (favoris.length === 0) {
-            list.innerHTML = '<li style="color: gray; font-style: italic; list-style: none;" id="no-fav-text">Aucun favori</li>';
+            list.innerHTML = '<li style="color: gray; font-style: italic;" id="no-fav-text">Aucun favori</li>';
             return;
         }
 
@@ -350,8 +461,9 @@
             li.style.display = "flex";
             li.style.justifyContent = "space-between";
             li.style.alignItems = "center";
+            li.style.marginBottom = "6px";
             li.innerHTML = `
-                <a href="javascript:void(0);" onclick="ouvrirVideo('${video.id}')">🎬 ${video.titre}</a>
+                <a href="javascript:void(0);" onclick="ouvrirVideo('${video.id}')" style="color: #24443d; text-decoration: none; font-size: 0.9rem;">🎬 ${video.titre}</a>
                 <span class="fav-star active" onclick="toggleFavori('${video.id}', '${video.titre}')">★</span>
             `;
             list.appendChild(li);
@@ -367,7 +479,6 @@
         calculerPhaseLune();
         afficherFavoris();
         afficherDateEtHeure();
-        // Met à jour l'heure toutes les minutes en direct
         setInterval(afficherDateEtHeure, 60000);
     });
 </script>
