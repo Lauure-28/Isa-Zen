@@ -18,8 +18,8 @@ VIDEOS_DATA = {
             {"id": "IpNlX_BllQA", "titre": "Ouverture du coeur"},
             {"id": "723lwelFRWc", "titre": "Méditation du matin"},
             {"id": "qF_N0xjT8yY", "titre": "Méditation du soir"},
-            {"id": "PuqtGvQQUdg", "titre": "Développer votre intuition"}
-            {"id': "HShzrjE0gK8", "titre": "Relaxation et réconfort}
+            {"id": "PuqtGvQQUdg", "titre": "Développer votre intuition"},
+            {"id": "HShzrjE0gK8", "titre": "Relaxation et réconfort"}
         ],
         "🎙️ Podcast": [
             {"id": "nD1FQ77w_eA", "titre": "Ces attachements qui volent notre énergie"},
@@ -63,7 +63,7 @@ VIDEOS_DATA = {
             {"id": "ppomRhKOpFw", "titre": "Comment vivre les fortes énergies actuelles ?"},
             {"id": "GtKG-M1Zddo", "titre": "Ce moyen rapide de débloquer son intuition"},
             {"id": "_p2ZX4lrKzc", "titre": "Comment allier productivité et flow ?"},
-            {"id": "L8N2GOjLYPA", "titre": "Rencontre vibrante (avec Lilou Macé)"},
+            {"id": "L8N2GOjLYPA", "titre": "Rencontre vibrante (with Lilou Macé)"},
             {"id": "TBmLLyk6FGE", "titre": "5 clés pour incarner l'abondance dans votre vie"},
             {"id": "ZI4qbhk3-8k", "titre": "La pensée qui a changé ma vie"},
             {"id": "3yFZxA7wwGA", "titre": "Avoir de l'inspiration au quotidien"},
@@ -114,7 +114,8 @@ VIDEOS_DATA = {
             {"id": "EIqEFx-GNXU", "titre": "Faire confiance à ses ressentis pour trouver les réponses à ses questions"},
             {"id": "mS7dj_4RyeM", "titre": "Comment reconnaître les signes de l'Univers"},
             {"id": "98hEML8h8mo", "titre": "Comment recevoir les messages de ses guides"}
-        ],
+        ]
+    },
     "Cédric Michel": {
         "🌞 Méditations du matin & pleine conscience": [
             {"id": "MJ8m10XAf6Q", "titre": "Affirmations positives ANTI STRESS"},
