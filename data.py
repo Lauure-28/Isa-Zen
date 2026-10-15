@@ -19,6 +19,7 @@ VIDEOS_DATA = {
             {"id": "723lwelFRWc", "titre": "Méditation du matin"},
             {"id": "qF_N0xjT8yY", "titre": "Méditation du soir"},
             {"id": "PuqtGvQQUdg", "titre": "Développer votre intuition"}
+            {"id': "HShzrjE0gK8", "titre": "Relaxation et réconfort}
         ],
         "🎙️ Podcast": [
             {"id": "nD1FQ77w_eA", "titre": "Ces attachements qui volent notre énergie"},
@@ -89,7 +90,30 @@ VIDEOS_DATA = {
             {"id": "rf8iyYFbJXs", "titre": "CHAKRA DE LA GORGE : Le débloquer et s'exprimer sans crainte"},
             {"id": "2SPH5DipquY", "titre": "Ouvrir le Chakra du Troisième Œil pour Débloquer Votre Intuition"},
             {"id": "xCwrKiuMwLs", "titre": "CHAKRA COURONNE : Les secrets pour une spiritualité plus profonde !"}
-        ]
+        ],
+        "👁️Intuition" : [
+            {"id": "eDAmg92YwuU", "titre": "Ce que vos CAUCHEMARS essaient de vous dire (et que vous ignorez)"},
+            {"id": "I8aCJCPll2I", "titre": "Vous ne recevez plus de signes ?"},
+            {"id": "MCOWomhhh", "titre": "7 erreurs qui BLOQUENT votre INTUITION et comment les corriger"},
+            {"id": "JZ6SU0kXOEc", "titre" "Communiquer avec ses GUIDES au quotidien : 6 CLÉS essentielles"},
+            {"id": "UYgUOKwYAdA", "titre" "Les signes de l'Univers : comment les RECONNAÎTRE ?"},
+            {"id": "Ii750FjLlg4", "titre" "Développez vos capacités extra-sensorielles"},
+            {"id": "kW7FgkhNboM", "titre" "Comment l’écriture intuitive peut vous transformer"},
+            {"id": "qi1EAgBxNFM", "titre" "Comment fonctionne l'intuition ?"},
+            {"id": "GklRZ3NYdN0", "titre" "Mental ou intuition ? Faites la différence !"},
+            {"id": "jr9bru6inJc", "titre" "Que se passe-t-il dans un soin énergétique ?"},
+            {"id": "bZl69UdcWfU", "titre" "Un conseil pour les personnes sensibles, empathiques et intuitives"},
+            {"id": "TY8TbZCQUz8", "titre" "Le mental : comment il fonctionne, comment le calmer et pour quoi faire ?"},
+            {"id": "HJvLy_XkYvc", "titre" "Mental ou intuition ? Comment faire la différence ?"},
+            {"id": "zxv7xrYksFM", "titre" "Comment toujours prendre la bonne décision ?"},
+            {"id": "h0W7ak6hOQE", "titre" "Les messages de l'Oracle"},
+            {"id": "SN5zKouA_bQ", "titre" "Manifester sa vie idéale avec l'intention"},
+            {"id": "svptuPS10F4", "titre" "Pourquoi prier ? Qui ? Comment ? Quels bénéfices ?"},
+            {"id": "GMtB5_iYt54", "titre" "Je n'entends pas mes guides, que faire ?"},
+            {"id": "8sMR2gE0ylc", "titre" "Peut on tout demander à ses Anges ?"},
+            {"id": "EIqEFx-GNXU", "titre" "Faire confiance à ses ressentis pour trouver les réponses à ses questions"},
+            {"id": "mS7dj_4RyeM", "titre" "Comment reconnaître les signes de l'Univers"},
+            {"id": "98hEML8h8mo", "titre" "Comment recevoir les messages de ses guides"}
     },
     "Cédric Michel": {
         "🌞 Méditations du matin & pleine conscience": [
